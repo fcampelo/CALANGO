@@ -23,11 +23,12 @@ make_report <- function(defs, render.report = TRUE){
                    significance = make_significance_report(defs),
                    correlation  = make_correlation_report(defs))
 
+     if ( getOption("browser") != ""){ 
     # Open in browser
     utils::browseURL(gsub("//", "/", paste0(normalizePath(defs$output.dir),
                                             "/KOMODO2_report.html"),
                           fixed = TRUE))
+     }
   }
-
   invisible(defs)
 }
