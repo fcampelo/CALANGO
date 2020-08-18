@@ -183,11 +183,6 @@ make_correlation_report <- function(defs){
                                           quiet = TRUE))
   file.remove(fp)
 
-  # Invoke browser and open results
-  myURL <- gsub("//", "/", paste0(defs$output.dir, "/index.html"), fixed = TRUE)
-  myURL <- paste0("file:/",
-                  normalizePath(gsub("./", "", myURL, fixed = TRUE)))
-  utils::browseURL(myURL)
   cat("\nAnd we're done!")
 
   invisible(defs)
