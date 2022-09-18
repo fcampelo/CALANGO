@@ -9,9 +9,12 @@ vignette: >
 
   <img src="https://github.com/fcampelo/CALANGO/raw/master/inst/images/CALANGO_LOGO.svg" height="150" alt="CALANGO logo. Drawn by Brazilian artist Berze - https://www.facebook.com/berzearte">
 
-Some examples of CALANGO output are available under `docs/articles/results` in the [CALANGO Github repository](https://github.com/fcampelo/CALANGO).  The examples below relate to the case study "*Homologous regions and biological roles associated with prophage density in pathogenic and free-living _Escherichia coli_*", which is presented as part of the manuscript _CALANGO: an annotation-based, phylogeny-aware comparative genomics framework for exploring and interpreting complex genotypes and phenotypes_.
+Some examples of CALANGO output are available under `docs/articles/results` in the [CALANGO Github repository](https://github.com/fcampelo/CALANGO), and their output pages are linked below. 
 
-Please navigate to one of the links below to check the example output:
+- **Example 1** relates to the case study "*Homologous regions and biological roles associated with prophage density in pathogenic and free-living _Escherichia coli_*".
+- **Example 2** relates to the case study *Homologous regions associated with maximum height in Angiosperms*.
+
+Both examples are presented as part of the manuscript _CALANGO: a phylogeny-aware comparative genomics tool for discovering quantitative genotype-phenotype associations across species_. Please navigate to one of the links below to check the examples:
 
 ```{r, results="asis", echo=FALSE}
 dirs <- dir("../docs/articles/results/")
@@ -22,4 +25,33 @@ for (i in seq_along(dirs)){
   cat(paste0('\n<li> <a href="', url, '" target="_blank">', txt, "</a></li><br/>"))
 }
 cat("</ul><br/>")
+```
+
+These examples can be independently reproduced by running the script below. 
+After running `CALANGO::retrieve_data_files()`, the main input files (which can be 
+used as templates for other studies) will be located under subfolder `/parameters`.
+
+
+```{r, eval=FALSE}
+install.packages("CALANGO")
+library(CALANGO)
+
+# Change target.dir to save under a different folder if needed 
+target.dir <- "data"
+
+# Change to increase number of cores. 
+ncores <- 1
+
+
+CALANGO::retrieve_data_files(target.dir)
+
+# Get CALANGO input files for the examples
+inputfiles <- dir(paste0(target.dir, "/parameters"), full.names = TRUE)
+
+# run for all example files
+for (i in seq_along(inputfiles)){
+  cat("\nProcessing example", i, "of", length(inputfiles), "\n")
+  defs <- CALANGO::run_CALANGO(inputfiles[i], cores = ncores)
+}
+
 ```

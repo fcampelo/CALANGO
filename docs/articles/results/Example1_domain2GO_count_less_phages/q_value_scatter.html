@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Annotation terms: q-values, size and coefficient of variation</title>
+
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CALANGO report</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Heatmaps</li>
+    <li>
+      <a href="heatmap_phylo_raw.html">raw data visualization</a>
+    </li>
+    <li>
+      <a href="heatmap_phylo_norm.html">normalized data visualization</a>
+    </li>
+    <li>
+      <a href="heatmap_phylo_perc.html">percentile data visualization</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Scatterplots</li>
+    <li>
+      <a href="q_value_scatter.html">q-value scatterplots</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Tables</li>
+    <li>
+      <a href="table.html">Annotation term table</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Annotation terms: q-values, size and
+coefficient of variation</h1>
+
+</div>
+
+
+<div id="htmlwidget-832705eafe17a1bbbf81" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-832705eafe17a1bbbf81">{"x":{"data":[{"x":[1.28595637180328,2.25589469654975,1.86983183442695,3.19009184143982,1.7822359172812,2.4070203665482,2.4070203665482,1.18609801369574,2.00968225359618,1.60826874067667,1.28595637180328,1.26891717384123,1.97013145158543,1.97013145158543,1.97013145158543,1.97013145158543,1.28595637180328,1.53424717697633,2.89644133231666,1.72846053894786,1.1274542820556,1.02952856029461,2.4070203665482,2.34376420743785,1.28743314526687,2.4070203665482,3.19009184143982,1.09806036237069,2.4070203665482,1.97013145158543,1.97013145158543,1.02952856029461,2.4070203665482,1.26891717384123,1.26494321413462,1.26891717384123,1.38548766051056,1.28595637180328,3.19009184143982,3.19009184143982,2.14905050173557,1.28595637180328,2.4070203665482,2.4070203665482,1.52686632002035,2.44291390786419,2.44291390786419,2.4070203665482,2.4070203665482,1.97013145158543,2.4070203665482,2.4070203665482,2.4070203665482,1.02952856029461,1.26891717384123,1.1977494393765,2.84916637634149,1.32318789356603,3.19009184143982,3.17971703677756,3.17971703677756,1.26891717384123,1.28595637180328,3.17971703677756,2.4070203665482,2.4070203665482,2.4070203665482,3.17971703677756],"y":[1.1807744156668,5.4204287481336,2.15360517717484,1.62161855540714,1.69142183027731,2.87618934149354,2.15360517717484,1.43134227108065,1.44983528489159,1.13164808641218,1.82240229375812,1.38315367076914,1.22962113187051,1.22962113187051,1.22962113187051,1.22962113187051,1.82240229375812,1.35536873067628,2.15360517717484,1.06321552800129,2.60474243472508,3.68818298906301,1.88299185793769,1.71036240948154,3.82345145825283,3.47891569969524,5.60284815604448,1.91540819691633,2.15360517717484,1.22962113187051,1.22962113187051,3.68818298906301,5.55404438087407,1.38315367076914,1.61872525884088,1.38315367076914,1.50732653475016,1.43435372126709,1.44110761470447,5.60284815604448,4.26250094887955,1.82240229375812,1.1490752825367,1.1490752825367,1.79100133970474,1.4985763570772,1.4985763570772,5.55404438087407,5.55404438087407,1.22962113187051,5.55404438087407,1.1490752825367,5.55404438087407,3.68818298906301,1.38315367076914,1.09611392305756,3.39675022870346,0.975308701086887,1.44110761470447,1.38315367076914,1.38315367076914,1.38315367076914,1.1807744156668,1.38315367076914,1.1490752825367,1.1490752825367,5.55404438087407,1.38315367076914],"text":["-log10(corrected_contrasts): 1.285956<br />-log10(Spearman_qvalue): 1.1807744<br />name: GO:0000166<br />description: nucleotide binding<br />size: 34350","-log10(corrected_contrasts): 2.255895<br />-log10(Spearman_qvalue): 5.4204287<br />name: GO:0004197<br />description: cysteine-type endopeptidase activity<br />size:    15","-log10(corrected_contrasts): 1.869832<br />-log10(Spearman_qvalue): 2.1536052<br />name: GO:0004518<br />description: nuclease activity<br />size:  2084","-log10(corrected_contrasts): 3.190092<br />-log10(Spearman_qvalue): 1.6216186<br />name: GO:0004519<br />description: endonuclease activity<br />size:  1137","-log10(corrected_contrasts): 1.782236<br />-log10(Spearman_qvalue): 1.6914218<br />name: GO:0005509<br />description: calcium ion binding<br />size:   126","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 2.8761893<br />name: GO:0005886<br />description: plasma membrane<br />size:  2394","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 2.1536052<br />name: GO:0005887<br />description: integral component of plasma membrane<br />size:   435","-log10(corrected_contrasts): 1.186098<br />-log10(Spearman_qvalue): 1.4313423<br />name: GO:0005976<br />description: polysaccharide metabolic process<br />size:  1081","-log10(corrected_contrasts): 2.009682<br />-log10(Spearman_qvalue): 1.4498353<br />name: GO:0006575<br />description: cellular modified amino acid metabolic process<br />size:   915","-log10(corrected_contrasts): 1.608269<br />-log10(Spearman_qvalue): 1.1316481<br />name: GO:0006760<br />description: folic acid-containing compound metabolic process<br />size:   344","-log10(corrected_contrasts): 1.285956<br />-log10(Spearman_qvalue): 1.8224023<br />name: GO:0008104<br />description: protein localization<br />size:  3052","-log10(corrected_contrasts): 1.268917<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0009306<br />description: protein secretion<br />size:  1529","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0009890<br />description: negative regulation of biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0009892<br />description: negative regulation of metabolic process<br />size:   217","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0010558<br />description: negative regulation of macromolecule biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0010605<br />description: negative regulation of macromolecule metabolic process<br />size:   217","-log10(corrected_contrasts): 1.285956<br />-log10(Spearman_qvalue): 1.8224023<br />name: GO:0015031<br />description: protein transport<br />size:  3052","-log10(corrected_contrasts): 1.534247<br />-log10(Spearman_qvalue): 1.3553687<br />name: GO:0016051<br />description: carbohydrate biosynthetic process<br />size:  2165","-log10(corrected_contrasts): 2.896441<br />-log10(Spearman_qvalue): 2.1536052<br />name: GO:0016151<br />description: nickel cation binding<br />size:   503","-log10(corrected_contrasts): 1.728461<br />-log10(Spearman_qvalue): 1.0632155<br />name: GO:0016407<br />description: acetyltransferase activity<br />size:   317","-log10(corrected_contrasts): 1.127454<br />-log10(Spearman_qvalue): 2.6047424<br />name: GO:0016491<br />description: oxidoreductase activity<br />size: 25732","-log10(corrected_contrasts): 1.029529<br />-log10(Spearman_qvalue): 3.6881830<br />name: GO:0016567<br />description: protein ubiquitination<br />size:    10","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 1.8829919<br />name: GO:0016645<br />description: oxidoreductase activity, acting on the CH-NH group of donors<br />size:   571","-log10(corrected_contrasts): 2.343764<br />-log10(Spearman_qvalue): 1.7103624<br />name: GO:0016646<br />description: oxidoreductase activity, acting on the CH-NH group of donors, NAD or NADP as acceptor<br />size:   492","-log10(corrected_contrasts): 1.287433<br />-log10(Spearman_qvalue): 3.8234515<br />name: GO:0016746<br />description: acyltransferase activity<br />size:  3099","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 3.4789157<br />name: GO:0016747<br />description: acyltransferase activity, transferring groups other than amino-acyl groups<br />size:  1670","-log10(corrected_contrasts): 3.190092<br />-log10(Spearman_qvalue): 5.6028482<br />name: GO:0019627<br />description: urea metabolic process<br />size:    24","-log10(corrected_contrasts): 1.098060<br />-log10(Spearman_qvalue): 1.9154082<br />name: GO:0030312<br />description: external encapsulating structure<br />size:   687","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 2.1536052<br />name: GO:0031226<br />description: intrinsic component of plasma membrane<br />size:   435","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0031324<br />description: negative regulation of cellular metabolic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0031327<br />description: negative regulation of cellular biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.029529<br />-log10(Spearman_qvalue): 3.6881830<br />name: GO:0032446<br />description: protein modification by small protein conjugation<br />size:    10","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 5.5540444<br />name: GO:0032880<br />description: regulation of protein localization<br />size:    14","-log10(corrected_contrasts): 1.268917<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0032940<br />description: secretion by cell<br />size:  1529","-log10(corrected_contrasts): 1.264943<br />-log10(Spearman_qvalue): 1.6187253<br />name: GO:0032991<br />description: protein-containing complex<br />size:  3149","-log10(corrected_contrasts): 1.268917<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0035592<br />description: establishment of protein localization to extracellular region<br />size:  1529","-log10(corrected_contrasts): 1.385488<br />-log10(Spearman_qvalue): 1.5073265<br />name: GO:0036094<br />description: small molecule binding<br />size: 39566","-log10(corrected_contrasts): 1.285956<br />-log10(Spearman_qvalue): 1.4343537<br />name: GO:0043168<br />description: anion binding<br />size: 35392","-log10(corrected_contrasts): 3.190092<br />-log10(Spearman_qvalue): 1.4411076<br />name: GO:0043190<br />description: ATP-binding cassette (ABC) transporter complex<br />size:   948","-log10(corrected_contrasts): 3.190092<br />-log10(Spearman_qvalue): 5.6028482<br />name: GO:0043419<br />description: urea catabolic process<br />size:    12","-log10(corrected_contrasts): 2.149051<br />-log10(Spearman_qvalue): 4.2625009<br />name: GO:0043605<br />description: cellular amide catabolic process<br />size:    91","-log10(corrected_contrasts): 1.285956<br />-log10(Spearman_qvalue): 1.8224023<br />name: GO:0045184<br />description: establishment of protein localization<br />size:  3052","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 1.1490753<br />name: GO:0045892<br />description: negative regulation of transcription, DNA-templated<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 1.1490753<br />name: GO:0045934<br />description: negative regulation of nucleobase-containing compound metabolic process<br />size:   112","-log10(corrected_contrasts): 1.526866<br />-log10(Spearman_qvalue): 1.7910013<br />name: GO:0046903<br />description: secretion<br />size:  1555","-log10(corrected_contrasts): 2.442914<br />-log10(Spearman_qvalue): 1.4985764<br />name: GO:0048519<br />description: negative regulation of biological process<br />size:   372","-log10(corrected_contrasts): 2.442914<br />-log10(Spearman_qvalue): 1.4985764<br />name: GO:0048523<br />description: negative regulation of cellular process<br />size:   292","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 5.5540444<br />name: GO:0050708<br />description: regulation of protein secretion<br />size:    14","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 5.5540444<br />name: GO:0051046<br />description: regulation of secretion<br />size:    14","-log10(corrected_contrasts): 1.970131<br />-log10(Spearman_qvalue): 1.2296211<br />name: GO:0051172<br />description: negative regulation of nitrogen compound metabolic process<br />size:   137","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 5.5540444<br />name: GO:0051223<br />description: regulation of protein transport<br />size:    14","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 1.1490753<br />name: GO:0051253<br />description: negative regulation of RNA metabolic process<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 5.5540444<br />name: GO:0070201<br />description: regulation of establishment of protein localization<br />size:    14","-log10(corrected_contrasts): 1.029529<br />-log10(Spearman_qvalue): 3.6881830<br />name: GO:0070647<br />description: protein modification by small protein conjugation or removal<br />size:    10","-log10(corrected_contrasts): 1.268917<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0071692<br />description: protein localization to extracellular region<br />size:  1529","-log10(corrected_contrasts): 1.197749<br />-log10(Spearman_qvalue): 1.0961139<br />name: GO:0071941<br />description: nitrogen cycle metabolic process<br />size:   185","-log10(corrected_contrasts): 2.849166<br />-log10(Spearman_qvalue): 3.3967502<br />name: GO:0071944<br />description: cell periphery<br />size:  3081","-log10(corrected_contrasts): 1.323188<br />-log10(Spearman_qvalue): 0.9753087<br />name: GO:0097367<br />description: carbohydrate derivative binding<br />size: 30345","-log10(corrected_contrasts): 3.190092<br />-log10(Spearman_qvalue): 1.4411076<br />name: GO:0098533<br />description: ATPase dependent transmembrane transport complex<br />size:   948","-log10(corrected_contrasts): 3.179717<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0098796<br />description: membrane protein complex<br />size:  1357","-log10(corrected_contrasts): 3.179717<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0098797<br />description: plasma membrane protein complex<br />size:  1037","-log10(corrected_contrasts): 1.268917<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:0140352<br />description: export from cell<br />size:  1529","-log10(corrected_contrasts): 1.285956<br />-log10(Spearman_qvalue): 1.1807744<br />name: GO:1901265<br />description: nucleoside phosphate binding<br />size: 34350","-log10(corrected_contrasts): 3.179717<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:1902495<br />description: transmembrane transporter complex<br />size:  1037","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 1.1490753<br />name: GO:1902679<br />description: negative regulation of RNA biosynthetic process<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 1.1490753<br />name: GO:1903507<br />description: negative regulation of nucleic acid-templated transcription<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Spearman_qvalue): 5.5540444<br />name: GO:1903530<br />description: regulation of secretion by cell<br />size:    14","-log10(corrected_contrasts): 3.179717<br />-log10(Spearman_qvalue): 1.3831537<br />name: GO:1990351<br />description: transporter complex<br />size:  1037"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":[0.100059428020868,0.862663610255992,0.115827462215781,0.136570179290176,0.772835856504708,0.115683198659758,0.169635468321599,0.141763984735114,0.115682146460388,0.137317814581164,0.127211471823546,0.150691078445458,0.311274183821648,0.230095227853227,0.311274183821648,0.230095227853227,0.127211471823546,0.114426950335163,0.187739596249787,0.148329375424937,0.101577916580365,1,0.127370141131332,0.132597423016204,0.112878171942465,0.124538649307476,0.985456281886691,0.146830097516244,0.169635468321599,0.311274183821648,0.311274183821648,1,0.836986170369083,0.150691078445458,0.119733030720749,0.150691078445458,0.1,0.100260789493198,0.136707992725663,0.985456281886691,0.215083709194044,0.127211471823546,0.298569246352482,0.298569246352482,0.154791668919871,0.175393108735404,0.19849361366091,0.836986170369083,0.836986170369083,0.311274183821648,0.836986170369083,0.298569246352482,0.836986170369083,1,0.150691078445458,0.223104640024453,0.118388594539979,0.100970313500025,0.136707992725663,0.126365818346829,0.137255554922188,0.150691078445458,0.100059428020868,0.137255554922188,0.298569246352482,0.298569246352482,0.836986170369083,0.137255554922188],"size":[21.3871810138546,3.99199204105866,8.10671504698376,6.96932639093742,4.80289202092702,8.41884897869121,5.73835329648247,6.88906701682241,6.63794482328703,5.51602668901477,9.02012670220368,7.48275361577101,4.85031482330094,5.14658420129039,4.85031482330094,5.14658420129039,9.02012670220368,8.19040482834264,5.88924744395574,5.44435997865183,19.0184305217978,3.77952755905512,6.03004699151562,5.86557824139637,9.06045609924878,7.65081466149625,4.13504863735638,6.25179626162462,5.73835329648247,4.85031482330094,4.85031482330094,3.77952755905512,3.9695615688808,7.48275361577101,9.10302432412996,7.48275361577101,22.6771653543307,21.6523246853661,6.68959300278745,3.91390189605893,4.63468060327068,9.02012670220368,4.73915226940072,4.73915226940072,7.51431232379421,5.58734937067915,5.37513440435727,3.9695615688808,3.9695615688808,4.85031482330094,3.9695615688808,4.73915226940072,3.9695615688808,3.77952755905512,7.48275361577101,5.036484385663,9.04504729452521,20.3285877782269,6.68959300278745,7.26679403250551,6.82452238099111,7.48275361577101,21.3871810138546,6.82452238099111,4.73915226940072,4.73915226940072,3.9695615688808,6.82452238099111],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":31.4155251141553},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Spearman","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.921500396237345,3.29812000549708],"tickmode":"array","ticktext":["1.0","1.5","2.0","2.5","3.0"],"tickvals":[1,1.5,2,2.5,3],"categoryorder":"array","categoryarray":["1.0","1.5","2.0","2.5","3.0"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"-log10(Corrected contrasts)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.743931728339007,5.83422512879236],"tickmode":"array","ticktext":["1","2","3","4","5"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["1","2","3","4","5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"-log10(Spearman correlation q-value)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"size<br />cv","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"4a0879914fc1":{"x":{},"y":{},"label":{},"description":{},"cv":{},"size":{},"alpha":{},"type":"scatter"}},"cur_data":"4a0879914fc1","visdat":{"4a0879914fc1":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c4505eff2ce3d57cc41b" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c4505eff2ce3d57cc41b">{"x":{"data":[{"x":[1.28595637180328,2.25589469654975,1.86983183442695,3.19009184143982,1.7822359172812,2.4070203665482,2.4070203665482,1.18609801369574,2.00968225359618,1.60826874067667,1.28595637180328,1.26891717384123,1.97013145158543,1.97013145158543,1.97013145158543,1.97013145158543,1.28595637180328,1.53424717697633,2.89644133231666,1.72846053894786,1.1274542820556,1.02952856029461,2.4070203665482,2.34376420743785,1.28743314526687,2.4070203665482,3.19009184143982,1.09806036237069,2.4070203665482,1.97013145158543,1.97013145158543,1.02952856029461,2.4070203665482,1.26891717384123,1.26494321413462,1.26891717384123,1.38548766051056,1.28595637180328,3.19009184143982,3.19009184143982,2.14905050173557,1.28595637180328,2.4070203665482,2.4070203665482,1.52686632002035,2.44291390786419,2.44291390786419,2.4070203665482,2.4070203665482,1.97013145158543,2.4070203665482,2.4070203665482,2.4070203665482,1.02952856029461,1.26891717384123,1.1977494393765,2.84916637634149,1.32318789356603,3.19009184143982,3.17971703677756,3.17971703677756,1.26891717384123,1.28595637180328,3.17971703677756,2.4070203665482,2.4070203665482,2.4070203665482,3.17971703677756],"y":[1.23578327976254,4.22430926947948,1.93986010339204,1.52573814515226,1.61240444403351,2.69467636786019,1.93986010339204,1.34129861264044,1.39188854910658,1.10957857540702,1.80323860860164,1.44794324338218,1.16058175288972,1.16058175288972,1.16058175288972,1.16058175288972,1.80323860860164,1.20898035777978,1.89919821116761,1.08479222072921,2.27863096233379,3.14790824747223,1.78571519501986,1.62904754790113,3.34388969783399,3.05375892119352,4.38723447700184,1.76851261665755,1.93986010339204,1.16058175288972,1.16058175288972,3.14790824747223,4.38723447700184,1.44794324338218,1.52573814515226,1.44794324338218,1.46183131295585,1.44794324338218,1.32702766338528,4.38723447700184,3.34471920617666,1.80323860860164,1.08759072660739,1.08759072660739,1.86357522345065,1.43527180098291,1.43527180098291,4.38723447700184,4.38723447700184,1.16058175288972,4.38723447700184,1.08759072660739,4.38723447700184,3.14790824747223,1.44794324338218,0.972244360972534,3.06675722748862,1.08969638374637,1.32702766338528,1.31944867946,1.31944867946,1.44794324338218,1.23578327976254,1.31944867946,1.08759072660739,1.08759072660739,4.38723447700184,1.31944867946],"text":["-log10(corrected_contrasts): 1.285956<br />-log10(Kendall_qvalue): 1.2357833<br />name: GO:0000166<br />description: nucleotide binding<br />size: 34350","-log10(corrected_contrasts): 2.255895<br />-log10(Kendall_qvalue): 4.2243093<br />name: GO:0004197<br />description: cysteine-type endopeptidase activity<br />size:    15","-log10(corrected_contrasts): 1.869832<br />-log10(Kendall_qvalue): 1.9398601<br />name: GO:0004518<br />description: nuclease activity<br />size:  2084","-log10(corrected_contrasts): 3.190092<br />-log10(Kendall_qvalue): 1.5257381<br />name: GO:0004519<br />description: endonuclease activity<br />size:  1137","-log10(corrected_contrasts): 1.782236<br />-log10(Kendall_qvalue): 1.6124044<br />name: GO:0005509<br />description: calcium ion binding<br />size:   126","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 2.6946764<br />name: GO:0005886<br />description: plasma membrane<br />size:  2394","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.9398601<br />name: GO:0005887<br />description: integral component of plasma membrane<br />size:   435","-log10(corrected_contrasts): 1.186098<br />-log10(Kendall_qvalue): 1.3412986<br />name: GO:0005976<br />description: polysaccharide metabolic process<br />size:  1081","-log10(corrected_contrasts): 2.009682<br />-log10(Kendall_qvalue): 1.3918885<br />name: GO:0006575<br />description: cellular modified amino acid metabolic process<br />size:   915","-log10(corrected_contrasts): 1.608269<br />-log10(Kendall_qvalue): 1.1095786<br />name: GO:0006760<br />description: folic acid-containing compound metabolic process<br />size:   344","-log10(corrected_contrasts): 1.285956<br />-log10(Kendall_qvalue): 1.8032386<br />name: GO:0008104<br />description: protein localization<br />size:  3052","-log10(corrected_contrasts): 1.268917<br />-log10(Kendall_qvalue): 1.4479432<br />name: GO:0009306<br />description: protein secretion<br />size:  1529","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0009890<br />description: negative regulation of biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0009892<br />description: negative regulation of metabolic process<br />size:   217","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0010558<br />description: negative regulation of macromolecule biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0010605<br />description: negative regulation of macromolecule metabolic process<br />size:   217","-log10(corrected_contrasts): 1.285956<br />-log10(Kendall_qvalue): 1.8032386<br />name: GO:0015031<br />description: protein transport<br />size:  3052","-log10(corrected_contrasts): 1.534247<br />-log10(Kendall_qvalue): 1.2089804<br />name: GO:0016051<br />description: carbohydrate biosynthetic process<br />size:  2165","-log10(corrected_contrasts): 2.896441<br />-log10(Kendall_qvalue): 1.8991982<br />name: GO:0016151<br />description: nickel cation binding<br />size:   503","-log10(corrected_contrasts): 1.728461<br />-log10(Kendall_qvalue): 1.0847922<br />name: GO:0016407<br />description: acetyltransferase activity<br />size:   317","-log10(corrected_contrasts): 1.127454<br />-log10(Kendall_qvalue): 2.2786310<br />name: GO:0016491<br />description: oxidoreductase activity<br />size: 25732","-log10(corrected_contrasts): 1.029529<br />-log10(Kendall_qvalue): 3.1479082<br />name: GO:0016567<br />description: protein ubiquitination<br />size:    10","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.7857152<br />name: GO:0016645<br />description: oxidoreductase activity, acting on the CH-NH group of donors<br />size:   571","-log10(corrected_contrasts): 2.343764<br />-log10(Kendall_qvalue): 1.6290475<br />name: GO:0016646<br />description: oxidoreductase activity, acting on the CH-NH group of donors, NAD or NADP as acceptor<br />size:   492","-log10(corrected_contrasts): 1.287433<br />-log10(Kendall_qvalue): 3.3438897<br />name: GO:0016746<br />description: acyltransferase activity<br />size:  3099","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 3.0537589<br />name: GO:0016747<br />description: acyltransferase activity, transferring groups other than amino-acyl groups<br />size:  1670","-log10(corrected_contrasts): 3.190092<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0019627<br />description: urea metabolic process<br />size:    24","-log10(corrected_contrasts): 1.098060<br />-log10(Kendall_qvalue): 1.7685126<br />name: GO:0030312<br />description: external encapsulating structure<br />size:   687","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.9398601<br />name: GO:0031226<br />description: intrinsic component of plasma membrane<br />size:   435","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0031324<br />description: negative regulation of cellular metabolic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0031327<br />description: negative regulation of cellular biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.029529<br />-log10(Kendall_qvalue): 3.1479082<br />name: GO:0032446<br />description: protein modification by small protein conjugation<br />size:    10","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0032880<br />description: regulation of protein localization<br />size:    14","-log10(corrected_contrasts): 1.268917<br />-log10(Kendall_qvalue): 1.4479432<br />name: GO:0032940<br />description: secretion by cell<br />size:  1529","-log10(corrected_contrasts): 1.264943<br />-log10(Kendall_qvalue): 1.5257381<br />name: GO:0032991<br />description: protein-containing complex<br />size:  3149","-log10(corrected_contrasts): 1.268917<br />-log10(Kendall_qvalue): 1.4479432<br />name: GO:0035592<br />description: establishment of protein localization to extracellular region<br />size:  1529","-log10(corrected_contrasts): 1.385488<br />-log10(Kendall_qvalue): 1.4618313<br />name: GO:0036094<br />description: small molecule binding<br />size: 39566","-log10(corrected_contrasts): 1.285956<br />-log10(Kendall_qvalue): 1.4479432<br />name: GO:0043168<br />description: anion binding<br />size: 35392","-log10(corrected_contrasts): 3.190092<br />-log10(Kendall_qvalue): 1.3270277<br />name: GO:0043190<br />description: ATP-binding cassette (ABC) transporter complex<br />size:   948","-log10(corrected_contrasts): 3.190092<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0043419<br />description: urea catabolic process<br />size:    12","-log10(corrected_contrasts): 2.149051<br />-log10(Kendall_qvalue): 3.3447192<br />name: GO:0043605<br />description: cellular amide catabolic process<br />size:    91","-log10(corrected_contrasts): 1.285956<br />-log10(Kendall_qvalue): 1.8032386<br />name: GO:0045184<br />description: establishment of protein localization<br />size:  3052","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.0875907<br />name: GO:0045892<br />description: negative regulation of transcription, DNA-templated<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.0875907<br />name: GO:0045934<br />description: negative regulation of nucleobase-containing compound metabolic process<br />size:   112","-log10(corrected_contrasts): 1.526866<br />-log10(Kendall_qvalue): 1.8635752<br />name: GO:0046903<br />description: secretion<br />size:  1555","-log10(corrected_contrasts): 2.442914<br />-log10(Kendall_qvalue): 1.4352718<br />name: GO:0048519<br />description: negative regulation of biological process<br />size:   372","-log10(corrected_contrasts): 2.442914<br />-log10(Kendall_qvalue): 1.4352718<br />name: GO:0048523<br />description: negative regulation of cellular process<br />size:   292","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0050708<br />description: regulation of protein secretion<br />size:    14","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0051046<br />description: regulation of secretion<br />size:    14","-log10(corrected_contrasts): 1.970131<br />-log10(Kendall_qvalue): 1.1605818<br />name: GO:0051172<br />description: negative regulation of nitrogen compound metabolic process<br />size:   137","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0051223<br />description: regulation of protein transport<br />size:    14","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.0875907<br />name: GO:0051253<br />description: negative regulation of RNA metabolic process<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:0070201<br />description: regulation of establishment of protein localization<br />size:    14","-log10(corrected_contrasts): 1.029529<br />-log10(Kendall_qvalue): 3.1479082<br />name: GO:0070647<br />description: protein modification by small protein conjugation or removal<br />size:    10","-log10(corrected_contrasts): 1.268917<br />-log10(Kendall_qvalue): 1.4479432<br />name: GO:0071692<br />description: protein localization to extracellular region<br />size:  1529","-log10(corrected_contrasts): 1.197749<br />-log10(Kendall_qvalue): 0.9722444<br />name: GO:0071941<br />description: nitrogen cycle metabolic process<br />size:   185","-log10(corrected_contrasts): 2.849166<br />-log10(Kendall_qvalue): 3.0667572<br />name: GO:0071944<br />description: cell periphery<br />size:  3081","-log10(corrected_contrasts): 1.323188<br />-log10(Kendall_qvalue): 1.0896964<br />name: GO:0097367<br />description: carbohydrate derivative binding<br />size: 30345","-log10(corrected_contrasts): 3.190092<br />-log10(Kendall_qvalue): 1.3270277<br />name: GO:0098533<br />description: ATPase dependent transmembrane transport complex<br />size:   948","-log10(corrected_contrasts): 3.179717<br />-log10(Kendall_qvalue): 1.3194487<br />name: GO:0098796<br />description: membrane protein complex<br />size:  1357","-log10(corrected_contrasts): 3.179717<br />-log10(Kendall_qvalue): 1.3194487<br />name: GO:0098797<br />description: plasma membrane protein complex<br />size:  1037","-log10(corrected_contrasts): 1.268917<br />-log10(Kendall_qvalue): 1.4479432<br />name: GO:0140352<br />description: export from cell<br />size:  1529","-log10(corrected_contrasts): 1.285956<br />-log10(Kendall_qvalue): 1.2357833<br />name: GO:1901265<br />description: nucleoside phosphate binding<br />size: 34350","-log10(corrected_contrasts): 3.179717<br />-log10(Kendall_qvalue): 1.3194487<br />name: GO:1902495<br />description: transmembrane transporter complex<br />size:  1037","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.0875907<br />name: GO:1902679<br />description: negative regulation of RNA biosynthetic process<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 1.0875907<br />name: GO:1903507<br />description: negative regulation of nucleic acid-templated transcription<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Kendall_qvalue): 4.3872345<br />name: GO:1903530<br />description: regulation of secretion by cell<br />size:    14","-log10(corrected_contrasts): 3.179717<br />-log10(Kendall_qvalue): 1.3194487<br />name: GO:1990351<br />description: transporter complex<br />size:  1037"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":[0.100059428020868,0.862663610255992,0.115827462215781,0.136570179290176,0.772835856504708,0.115683198659758,0.169635468321599,0.141763984735114,0.115682146460388,0.137317814581164,0.127211471823546,0.150691078445458,0.311274183821648,0.230095227853227,0.311274183821648,0.230095227853227,0.127211471823546,0.114426950335163,0.187739596249787,0.148329375424937,0.101577916580365,1,0.127370141131332,0.132597423016204,0.112878171942465,0.124538649307476,0.985456281886691,0.146830097516244,0.169635468321599,0.311274183821648,0.311274183821648,1,0.836986170369083,0.150691078445458,0.119733030720749,0.150691078445458,0.1,0.100260789493198,0.136707992725663,0.985456281886691,0.215083709194044,0.127211471823546,0.298569246352482,0.298569246352482,0.154791668919871,0.175393108735404,0.19849361366091,0.836986170369083,0.836986170369083,0.311274183821648,0.836986170369083,0.298569246352482,0.836986170369083,1,0.150691078445458,0.223104640024453,0.118388594539979,0.100970313500025,0.136707992725663,0.126365818346829,0.137255554922188,0.150691078445458,0.100059428020868,0.137255554922188,0.298569246352482,0.298569246352482,0.836986170369083,0.137255554922188],"size":[21.3871810138546,3.99199204105866,8.10671504698376,6.96932639093742,4.80289202092702,8.41884897869121,5.73835329648247,6.88906701682241,6.63794482328703,5.51602668901477,9.02012670220368,7.48275361577101,4.85031482330094,5.14658420129039,4.85031482330094,5.14658420129039,9.02012670220368,8.19040482834264,5.88924744395574,5.44435997865183,19.0184305217978,3.77952755905512,6.03004699151562,5.86557824139637,9.06045609924878,7.65081466149625,4.13504863735638,6.25179626162462,5.73835329648247,4.85031482330094,4.85031482330094,3.77952755905512,3.9695615688808,7.48275361577101,9.10302432412996,7.48275361577101,22.6771653543307,21.6523246853661,6.68959300278745,3.91390189605893,4.63468060327068,9.02012670220368,4.73915226940072,4.73915226940072,7.51431232379421,5.58734937067915,5.37513440435727,3.9695615688808,3.9695615688808,4.85031482330094,3.9695615688808,4.73915226940072,3.9695615688808,3.77952755905512,7.48275361577101,5.036484385663,9.04504729452521,20.3285877782269,6.68959300278745,7.26679403250551,6.82452238099111,7.48275361577101,21.3871810138546,6.82452238099111,4.73915226940072,4.73915226940072,3.9695615688808,6.82452238099111],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":31.4155251141553},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Kendall","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.921500396237345,3.29812000549708],"tickmode":"array","ticktext":["1.0","1.5","2.0","2.5","3.0"],"tickvals":[1,1.5,2,2.5,3],"categoryorder":"array","categoryarray":["1.0","1.5","2.0","2.5","3.0"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"-log10(Corrected contrasts)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.801494855171069,4.55798398280331],"tickmode":"array","ticktext":["1","2","3","4"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["1","2","3","4"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"-log10(Kendall correlation q-value)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"size<br />cv","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"4a08704e3fd8":{"x":{},"y":{},"label":{},"description":{},"cv":{},"size":{},"alpha":{},"type":"scatter"}},"cur_data":"4a08704e3fd8","visdat":{"4a08704e3fd8":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9a69a1cb244b41116993" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9a69a1cb244b41116993">{"x":{"data":[{"x":[1.28595637180328,2.25589469654975,1.86983183442695,3.19009184143982,1.7822359172812,2.4070203665482,2.4070203665482,1.18609801369574,2.00968225359618,1.60826874067667,1.28595637180328,1.26891717384123,1.97013145158543,1.97013145158543,1.97013145158543,1.97013145158543,1.28595637180328,1.53424717697633,2.89644133231666,1.72846053894786,1.1274542820556,1.02952856029461,2.4070203665482,2.34376420743785,1.28743314526687,2.4070203665482,3.19009184143982,1.09806036237069,2.4070203665482,1.97013145158543,1.97013145158543,1.02952856029461,2.4070203665482,1.26891717384123,1.26494321413462,1.26891717384123,1.38548766051056,1.28595637180328,3.19009184143982,3.19009184143982,2.14905050173557,1.28595637180328,2.4070203665482,2.4070203665482,1.52686632002035,2.44291390786419,2.44291390786419,2.4070203665482,2.4070203665482,1.97013145158543,2.4070203665482,2.4070203665482,2.4070203665482,1.02952856029461,1.26891717384123,1.1977494393765,2.84916637634149,1.32318789356603,3.19009184143982,3.17971703677756,3.17971703677756,1.26891717384123,1.28595637180328,3.17971703677756,2.4070203665482,2.4070203665482,2.4070203665482,3.17971703677756],"y":[1.34649689431553,5.51659168345325,2.03013562406726,2.00210501879309,2.25579295673829,3.48873867033882,2.07041424941559,1.63890152556865,1.25275556359937,1.16008271464738,2.56386988982245,1.54750133311423,1.34622661628704,1.34622661628704,1.34622661628704,1.34622661628704,2.56386988982245,1.7365864166644,7.88693503401932,1.556324414284,1.54750133311423,4.64039643265087,1.75908940842925,1.65129136459566,5.34429218729322,5.51659168345325,9.41236618973886,1.5891952519614,2.07041424941559,1.34622661628704,1.34622661628704,4.64039643265087,7.39048993278952,1.54750133311423,2.23717772367894,1.54750133311423,1.52618110130119,1.54750133311423,1.5066138411409,9.41236618973886,7.39048993278952,2.56386988982245,1.29715941785243,1.29715941785243,2.42297263939318,1.73075934570608,1.73075934570608,7.39048993278952,7.39048993278952,1.34622661628704,7.39048993278952,1.29715941785243,7.39048993278952,4.64039643265087,1.54750133311423,4.67440548963009,3.67760469882543,1.16008271464738,1.5066138411409,1.47544512490776,1.47544512490776,1.54750133311423,1.34649689431553,1.47544512490776,1.29715941785243,1.29715941785243,7.39048993278952,1.47544512490776],"text":["-log10(corrected_contrasts): 1.285956<br />-log10(Pearson_qvalue): 1.346497<br />name: GO:0000166<br />description: nucleotide binding<br />size: 34350","-log10(corrected_contrasts): 2.255895<br />-log10(Pearson_qvalue): 5.516592<br />name: GO:0004197<br />description: cysteine-type endopeptidase activity<br />size:    15","-log10(corrected_contrasts): 1.869832<br />-log10(Pearson_qvalue): 2.030136<br />name: GO:0004518<br />description: nuclease activity<br />size:  2084","-log10(corrected_contrasts): 3.190092<br />-log10(Pearson_qvalue): 2.002105<br />name: GO:0004519<br />description: endonuclease activity<br />size:  1137","-log10(corrected_contrasts): 1.782236<br />-log10(Pearson_qvalue): 2.255793<br />name: GO:0005509<br />description: calcium ion binding<br />size:   126","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 3.488739<br />name: GO:0005886<br />description: plasma membrane<br />size:  2394","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 2.070414<br />name: GO:0005887<br />description: integral component of plasma membrane<br />size:   435","-log10(corrected_contrasts): 1.186098<br />-log10(Pearson_qvalue): 1.638902<br />name: GO:0005976<br />description: polysaccharide metabolic process<br />size:  1081","-log10(corrected_contrasts): 2.009682<br />-log10(Pearson_qvalue): 1.252756<br />name: GO:0006575<br />description: cellular modified amino acid metabolic process<br />size:   915","-log10(corrected_contrasts): 1.608269<br />-log10(Pearson_qvalue): 1.160083<br />name: GO:0006760<br />description: folic acid-containing compound metabolic process<br />size:   344","-log10(corrected_contrasts): 1.285956<br />-log10(Pearson_qvalue): 2.563870<br />name: GO:0008104<br />description: protein localization<br />size:  3052","-log10(corrected_contrasts): 1.268917<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0009306<br />description: protein secretion<br />size:  1529","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0009890<br />description: negative regulation of biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0009892<br />description: negative regulation of metabolic process<br />size:   217","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0010558<br />description: negative regulation of macromolecule biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0010605<br />description: negative regulation of macromolecule metabolic process<br />size:   217","-log10(corrected_contrasts): 1.285956<br />-log10(Pearson_qvalue): 2.563870<br />name: GO:0015031<br />description: protein transport<br />size:  3052","-log10(corrected_contrasts): 1.534247<br />-log10(Pearson_qvalue): 1.736586<br />name: GO:0016051<br />description: carbohydrate biosynthetic process<br />size:  2165","-log10(corrected_contrasts): 2.896441<br />-log10(Pearson_qvalue): 7.886935<br />name: GO:0016151<br />description: nickel cation binding<br />size:   503","-log10(corrected_contrasts): 1.728461<br />-log10(Pearson_qvalue): 1.556324<br />name: GO:0016407<br />description: acetyltransferase activity<br />size:   317","-log10(corrected_contrasts): 1.127454<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0016491<br />description: oxidoreductase activity<br />size: 25732","-log10(corrected_contrasts): 1.029529<br />-log10(Pearson_qvalue): 4.640396<br />name: GO:0016567<br />description: protein ubiquitination<br />size:    10","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 1.759089<br />name: GO:0016645<br />description: oxidoreductase activity, acting on the CH-NH group of donors<br />size:   571","-log10(corrected_contrasts): 2.343764<br />-log10(Pearson_qvalue): 1.651291<br />name: GO:0016646<br />description: oxidoreductase activity, acting on the CH-NH group of donors, NAD or NADP as acceptor<br />size:   492","-log10(corrected_contrasts): 1.287433<br />-log10(Pearson_qvalue): 5.344292<br />name: GO:0016746<br />description: acyltransferase activity<br />size:  3099","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 5.516592<br />name: GO:0016747<br />description: acyltransferase activity, transferring groups other than amino-acyl groups<br />size:  1670","-log10(corrected_contrasts): 3.190092<br />-log10(Pearson_qvalue): 9.412366<br />name: GO:0019627<br />description: urea metabolic process<br />size:    24","-log10(corrected_contrasts): 1.098060<br />-log10(Pearson_qvalue): 1.589195<br />name: GO:0030312<br />description: external encapsulating structure<br />size:   687","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 2.070414<br />name: GO:0031226<br />description: intrinsic component of plasma membrane<br />size:   435","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0031324<br />description: negative regulation of cellular metabolic process<br />size:   137","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0031327<br />description: negative regulation of cellular biosynthetic process<br />size:   137","-log10(corrected_contrasts): 1.029529<br />-log10(Pearson_qvalue): 4.640396<br />name: GO:0032446<br />description: protein modification by small protein conjugation<br />size:    10","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:0032880<br />description: regulation of protein localization<br />size:    14","-log10(corrected_contrasts): 1.268917<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0032940<br />description: secretion by cell<br />size:  1529","-log10(corrected_contrasts): 1.264943<br />-log10(Pearson_qvalue): 2.237178<br />name: GO:0032991<br />description: protein-containing complex<br />size:  3149","-log10(corrected_contrasts): 1.268917<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0035592<br />description: establishment of protein localization to extracellular region<br />size:  1529","-log10(corrected_contrasts): 1.385488<br />-log10(Pearson_qvalue): 1.526181<br />name: GO:0036094<br />description: small molecule binding<br />size: 39566","-log10(corrected_contrasts): 1.285956<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0043168<br />description: anion binding<br />size: 35392","-log10(corrected_contrasts): 3.190092<br />-log10(Pearson_qvalue): 1.506614<br />name: GO:0043190<br />description: ATP-binding cassette (ABC) transporter complex<br />size:   948","-log10(corrected_contrasts): 3.190092<br />-log10(Pearson_qvalue): 9.412366<br />name: GO:0043419<br />description: urea catabolic process<br />size:    12","-log10(corrected_contrasts): 2.149051<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:0043605<br />description: cellular amide catabolic process<br />size:    91","-log10(corrected_contrasts): 1.285956<br />-log10(Pearson_qvalue): 2.563870<br />name: GO:0045184<br />description: establishment of protein localization<br />size:  3052","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 1.297159<br />name: GO:0045892<br />description: negative regulation of transcription, DNA-templated<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 1.297159<br />name: GO:0045934<br />description: negative regulation of nucleobase-containing compound metabolic process<br />size:   112","-log10(corrected_contrasts): 1.526866<br />-log10(Pearson_qvalue): 2.422973<br />name: GO:0046903<br />description: secretion<br />size:  1555","-log10(corrected_contrasts): 2.442914<br />-log10(Pearson_qvalue): 1.730759<br />name: GO:0048519<br />description: negative regulation of biological process<br />size:   372","-log10(corrected_contrasts): 2.442914<br />-log10(Pearson_qvalue): 1.730759<br />name: GO:0048523<br />description: negative regulation of cellular process<br />size:   292","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:0050708<br />description: regulation of protein secretion<br />size:    14","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:0051046<br />description: regulation of secretion<br />size:    14","-log10(corrected_contrasts): 1.970131<br />-log10(Pearson_qvalue): 1.346227<br />name: GO:0051172<br />description: negative regulation of nitrogen compound metabolic process<br />size:   137","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:0051223<br />description: regulation of protein transport<br />size:    14","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 1.297159<br />name: GO:0051253<br />description: negative regulation of RNA metabolic process<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:0070201<br />description: regulation of establishment of protein localization<br />size:    14","-log10(corrected_contrasts): 1.029529<br />-log10(Pearson_qvalue): 4.640396<br />name: GO:0070647<br />description: protein modification by small protein conjugation or removal<br />size:    10","-log10(corrected_contrasts): 1.268917<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0071692<br />description: protein localization to extracellular region<br />size:  1529","-log10(corrected_contrasts): 1.197749<br />-log10(Pearson_qvalue): 4.674405<br />name: GO:0071941<br />description: nitrogen cycle metabolic process<br />size:   185","-log10(corrected_contrasts): 2.849166<br />-log10(Pearson_qvalue): 3.677605<br />name: GO:0071944<br />description: cell periphery<br />size:  3081","-log10(corrected_contrasts): 1.323188<br />-log10(Pearson_qvalue): 1.160083<br />name: GO:0097367<br />description: carbohydrate derivative binding<br />size: 30345","-log10(corrected_contrasts): 3.190092<br />-log10(Pearson_qvalue): 1.506614<br />name: GO:0098533<br />description: ATPase dependent transmembrane transport complex<br />size:   948","-log10(corrected_contrasts): 3.179717<br />-log10(Pearson_qvalue): 1.475445<br />name: GO:0098796<br />description: membrane protein complex<br />size:  1357","-log10(corrected_contrasts): 3.179717<br />-log10(Pearson_qvalue): 1.475445<br />name: GO:0098797<br />description: plasma membrane protein complex<br />size:  1037","-log10(corrected_contrasts): 1.268917<br />-log10(Pearson_qvalue): 1.547501<br />name: GO:0140352<br />description: export from cell<br />size:  1529","-log10(corrected_contrasts): 1.285956<br />-log10(Pearson_qvalue): 1.346497<br />name: GO:1901265<br />description: nucleoside phosphate binding<br />size: 34350","-log10(corrected_contrasts): 3.179717<br />-log10(Pearson_qvalue): 1.475445<br />name: GO:1902495<br />description: transmembrane transporter complex<br />size:  1037","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 1.297159<br />name: GO:1902679<br />description: negative regulation of RNA biosynthetic process<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 1.297159<br />name: GO:1903507<br />description: negative regulation of nucleic acid-templated transcription<br />size:   112","-log10(corrected_contrasts): 2.407020<br />-log10(Pearson_qvalue): 7.390490<br />name: GO:1903530<br />description: regulation of secretion by cell<br />size:    14","-log10(corrected_contrasts): 3.179717<br />-log10(Pearson_qvalue): 1.475445<br />name: GO:1990351<br />description: transporter complex<br />size:  1037"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":[0.100059428020868,0.862663610255992,0.115827462215781,0.136570179290176,0.772835856504708,0.115683198659758,0.169635468321599,0.141763984735114,0.115682146460388,0.137317814581164,0.127211471823546,0.150691078445458,0.311274183821648,0.230095227853227,0.311274183821648,0.230095227853227,0.127211471823546,0.114426950335163,0.187739596249787,0.148329375424937,0.101577916580365,1,0.127370141131332,0.132597423016204,0.112878171942465,0.124538649307476,0.985456281886691,0.146830097516244,0.169635468321599,0.311274183821648,0.311274183821648,1,0.836986170369083,0.150691078445458,0.119733030720749,0.150691078445458,0.1,0.100260789493198,0.136707992725663,0.985456281886691,0.215083709194044,0.127211471823546,0.298569246352482,0.298569246352482,0.154791668919871,0.175393108735404,0.19849361366091,0.836986170369083,0.836986170369083,0.311274183821648,0.836986170369083,0.298569246352482,0.836986170369083,1,0.150691078445458,0.223104640024453,0.118388594539979,0.100970313500025,0.136707992725663,0.126365818346829,0.137255554922188,0.150691078445458,0.100059428020868,0.137255554922188,0.298569246352482,0.298569246352482,0.836986170369083,0.137255554922188],"size":[21.3871810138546,3.99199204105866,8.10671504698376,6.96932639093742,4.80289202092702,8.41884897869121,5.73835329648247,6.88906701682241,6.63794482328703,5.51602668901477,9.02012670220368,7.48275361577101,4.85031482330094,5.14658420129039,4.85031482330094,5.14658420129039,9.02012670220368,8.19040482834264,5.88924744395574,5.44435997865183,19.0184305217978,3.77952755905512,6.03004699151562,5.86557824139637,9.06045609924878,7.65081466149625,4.13504863735638,6.25179626162462,5.73835329648247,4.85031482330094,4.85031482330094,3.77952755905512,3.9695615688808,7.48275361577101,9.10302432412996,7.48275361577101,22.6771653543307,21.6523246853661,6.68959300278745,3.91390189605893,4.63468060327068,9.02012670220368,4.73915226940072,4.73915226940072,7.51431232379421,5.58734937067915,5.37513440435727,3.9695615688808,3.9695615688808,4.85031482330094,3.9695615688808,4.73915226940072,3.9695615688808,3.77952755905512,7.48275361577101,5.036484385663,9.04504729452521,20.3285877782269,6.68959300278745,7.26679403250551,6.82452238099111,7.48275361577101,21.3871810138546,6.82452238099111,4.73915226940072,4.73915226940072,3.9695615688808,6.82452238099111],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Pearson","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.921500396237345,3.29812000549708],"tickmode":"array","ticktext":["1.0","1.5","2.0","2.5","3.0"],"tickvals":[1,1.5,2,2.5,3],"categoryorder":"array","categoryarray":["1.0","1.5","2.0","2.5","3.0"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"-log10(Corrected contrasts)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.74746854089281,9.82498036349343],"tickmode":"array","ticktext":["2.5","5.0","7.5"],"tickvals":[2.5,5,7.5],"categoryorder":"array","categoryarray":["2.5","5.0","7.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"-log10(Pearson correlation q-value)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"size<br />cv","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"4a082e1f3924":{"x":{},"y":{},"label":{},"description":{},"cv":{},"size":{},"alpha":{},"type":"scatter"}},"cur_data":"4a082e1f3924","visdat":{"4a082e1f3924":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

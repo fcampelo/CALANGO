@@ -1,5 +1,8 @@
 ## Changes and notes
-* Regular maintenance update: Updated project home page, minor updates to documentation.
+* Regular maintenance update: 
+    * Added a second set of examples under Vignette "Usage Examples".
+    * Updated project home page, minor updates to documentation.
+    * Minor changes to Rmd files to prevent pandoc errors.
 
 ## R CMD check results  
 * Duration: 42.5s
@@ -14,4 +17,5 @@
     * Ubuntu 20.04.4 (R 4.1.3 and devel): <https://github.com/fcampelo/CALANGO/actions>
     
 * Windows:
-    *   Microsoft Windows Server 2022 - 10.0.20348 (R 4.1.3): <https://github.com/fcampelo/CALANGO/actions>
+    * Microsoft Windows Server 2022 - 10.0.20348 (R 4.1.3): <https://github.com/fcampelo/CALANGO/actions>
+    * Microsoft Windows Windows 10 Enterprise v.20H2 (R 4.2.0): using `devtools::check()`

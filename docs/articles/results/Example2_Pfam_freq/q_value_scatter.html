@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Annotation terms: q-values, size and coefficient of variation</title>
+
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CALANGO report</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Heatmaps</li>
+    <li>
+      <a href="heatmap_phylo_raw.html">raw data visualization</a>
+    </li>
+    <li>
+      <a href="heatmap_phylo_norm.html">normalized data visualization</a>
+    </li>
+    <li>
+      <a href="heatmap_phylo_perc.html">percentile data visualization</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Scatterplots</li>
+    <li>
+      <a href="q_value_scatter.html">q-value scatterplots</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Tables</li>
+    <li>
+      <a href="table.html">Annotation term table</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Annotation terms: q-values, size and
+coefficient of variation</h1>
+
+</div>
+
+
+<div id="htmlwidget-5f656930bc8a56c83b0b" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5f656930bc8a56c83b0b">{"x":{"data":[{"x":[1.36009687121603,1.11031991665658,1.11031991665658,1.11031991665658,1.02767552879147,1.04295458401389,1.03367628657581,1.04295458401389,1.04295458401389,1.04295458401389,1.11031991665658,1.36009687121603,1.11031991665658,1.04295458401389,1.04295458401389,1.04295458401389,1.04295458401389,1.04295458401389,1.11031991665658,1.11031991665658],"y":[2.400686878065,1.76608027526289,1.30621307791545,2.35466147710396,0.785373238265628,1.04839083364314,2.79019458977624,1.44521087742401,1.48183237269092,4.34103900126,1.81306397720144,1.11449668420533,3.213362037926,2.60847376694944,0.903988843819659,2.48674539484825,1.23020272087419,1.1721911519827,1.57121301043562,2.48782073135599],"text":["-log10(corrected_contrasts): 1.360097<br />-log10(Spearman_qvalue): 2.4006869<br />name: PF00307<br />description: Calponin homology (CH) domain<br />size:  1256","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 1.7660803<br />name: PF00560<br />description: Leucine Rich Repeat<br />size: 13718","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 1.3062131<br />name: PF00614<br />description: Phospholipase D Active site motif<br />size:  1021","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 2.3546615<br />name: PF00786<br />description: P21-Rho-binding domain<br />size:   574","-log10(corrected_contrasts): 1.027676<br />-log10(Spearman_qvalue): 0.7853732<br />name: PF00855<br />description: PWWP domain<br />size:   829","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 1.0483908<br />name: PF00856<br />description: SET domain<br />size:  2278","-log10(corrected_contrasts): 1.033676<br />-log10(Spearman_qvalue): 2.7901946<br />name: PF00954<br />description: S-locus glycoprotein domain<br />size:  3766","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 1.4452109<br />name: PF01016<br />description: Ribosomal L27 protein<br />size:   133","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 1.4818324<br />name: PF01412<br />description: Putative GTPase activating protein for Arf<br />size:   834","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 4.3410390<br />name: PF01453<br />description: D-mannose binding lectin<br />size:  4991","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 1.8130640<br />name: PF02002<br />description: TFIIE alpha subunit<br />size:    68","-log10(corrected_contrasts): 1.360097<br />-log10(Spearman_qvalue): 1.1144967<br />name: PF03062<br />description: MBOAT, membrane-bound O-acyltransferase family<br />size:   201","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 3.2133620<br />name: PF07496<br />description: CW-type Zinc Finger<br />size:   569","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 2.6084738<br />name: PF08276<br />description: PAN-like domain<br />size:  3270","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 0.9039888<br />name: PF10497<br />description: Zinc-finger domain of monoamine-oxidase A repressor R1<br />size:   408","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 2.4867454<br />name: PF11721<br />description: Malectin domain<br />size:  1108","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 1.2302027<br />name: PF12146<br />description: Serine aminopeptidase, S33<br />size:  1676","-log10(corrected_contrasts): 1.042955<br />-log10(Spearman_qvalue): 1.1721912<br />name: PF12698<br />description: ABC-2 family transporter protein<br />size:   337","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 1.5712130<br />name: PF12796<br />description: Ankyrin repeats (3 copies)<br />size:  9505","-log10(corrected_contrasts): 1.110320<br />-log10(Spearman_qvalue): 2.4878207<br />name: PF13855<br />description: Leucine rich repeat<br />size: 34294"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":[0.226119222956141,0.86570338551865,0.441186027903141,0.382576494080031,0.290372018054046,0.1,0.972344577450799,0.588551597784444,0.329812284924975,0.927591310168285,0.872186615016772,0.364799612894765,0.189786178098717,0.950206650942284,0.523994301723503,1,0.21172516427807,0.568499927002926,0.721118707248373,0.727171037819048],"size":[7.30029766496808,15.7137952060583,6.93290457657504,6.07728777762336,6.597402897052,8.58156547227012,9.99126229055127,4.60307026697218,6.60664488755216,10.9466424374972,3.77952755905512,4.95755462355111,6.06590702306314,9.55969090360129,5.66304179170863,7.07369839072336,7.87564566048404,5.45487770470479,13.7026060194081,22.6771653543307],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":31.4155251141553},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Spearman","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.01105446167024,1.37671793833726],"tickmode":"array","ticktext":["1.1","1.2","1.3"],"tickvals":[1.1,1.2,1.3],"categoryorder":"array","categoryarray":["1.1","1.2","1.3"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"-log10(Corrected contrasts)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.60758995011591,4.51882228940972],"tickmode":"array","ticktext":["1","2","3","4"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["1","2","3","4"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"-log10(Spearman correlation q-value)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"size<br />cv","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"4a085c7de":{"x":{},"y":{},"label":{},"description":{},"cv":{},"size":{},"alpha":{},"type":"scatter"}},"cur_data":"4a085c7de","visdat":{"4a085c7de":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-93d52dbedc8f6c13d7b4" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-93d52dbedc8f6c13d7b4">{"x":{"data":[{"x":[1.36009687121603,1.11031991665658,1.11031991665658,1.11031991665658,1.02767552879147,1.04295458401389,1.03367628657581,1.04295458401389,1.04295458401389,1.04295458401389,1.11031991665658,1.36009687121603,1.11031991665658,1.04295458401389,1.04295458401389,1.04295458401389,1.04295458401389,1.04295458401389,1.11031991665658,1.11031991665658],"y":[2.25732868868711,1.60364707348732,1.14759211843694,2.16407668694718,0.728808196727931,1.13489083044919,2.5096399063839,1.41460425592812,1.78666139475753,3.66916171266511,1.70169806738308,1.23909250987132,2.93548549942718,2.40537509979217,0.807620691367712,2.3018368522098,1.21012906514862,1.11904670205955,1.41460425592812,2.18487788946639],"text":["-log10(corrected_contrasts): 1.360097<br />-log10(Kendall_qvalue): 2.2573287<br />name: PF00307<br />description: Calponin homology (CH) domain<br />size:  1256","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 1.6036471<br />name: PF00560<br />description: Leucine Rich Repeat<br />size: 13718","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 1.1475921<br />name: PF00614<br />description: Phospholipase D Active site motif<br />size:  1021","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 2.1640767<br />name: PF00786<br />description: P21-Rho-binding domain<br />size:   574","-log10(corrected_contrasts): 1.027676<br />-log10(Kendall_qvalue): 0.7288082<br />name: PF00855<br />description: PWWP domain<br />size:   829","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 1.1348908<br />name: PF00856<br />description: SET domain<br />size:  2278","-log10(corrected_contrasts): 1.033676<br />-log10(Kendall_qvalue): 2.5096399<br />name: PF00954<br />description: S-locus glycoprotein domain<br />size:  3766","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 1.4146043<br />name: PF01016<br />description: Ribosomal L27 protein<br />size:   133","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 1.7866614<br />name: PF01412<br />description: Putative GTPase activating protein for Arf<br />size:   834","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 3.6691617<br />name: PF01453<br />description: D-mannose binding lectin<br />size:  4991","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 1.7016981<br />name: PF02002<br />description: TFIIE alpha subunit<br />size:    68","-log10(corrected_contrasts): 1.360097<br />-log10(Kendall_qvalue): 1.2390925<br />name: PF03062<br />description: MBOAT, membrane-bound O-acyltransferase family<br />size:   201","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 2.9354855<br />name: PF07496<br />description: CW-type Zinc Finger<br />size:   569","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 2.4053751<br />name: PF08276<br />description: PAN-like domain<br />size:  3270","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 0.8076207<br />name: PF10497<br />description: Zinc-finger domain of monoamine-oxidase A repressor R1<br />size:   408","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 2.3018369<br />name: PF11721<br />description: Malectin domain<br />size:  1108","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 1.2101291<br />name: PF12146<br />description: Serine aminopeptidase, S33<br />size:  1676","-log10(corrected_contrasts): 1.042955<br />-log10(Kendall_qvalue): 1.1190467<br />name: PF12698<br />description: ABC-2 family transporter protein<br />size:   337","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 1.4146043<br />name: PF12796<br />description: Ankyrin repeats (3 copies)<br />size:  9505","-log10(corrected_contrasts): 1.110320<br />-log10(Kendall_qvalue): 2.1848779<br />name: PF13855<br />description: Leucine rich repeat<br />size: 34294"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":[0.226119222956141,0.86570338551865,0.441186027903141,0.382576494080031,0.290372018054046,0.1,0.972344577450799,0.588551597784444,0.329812284924975,0.927591310168285,0.872186615016772,0.364799612894765,0.189786178098717,0.950206650942284,0.523994301723503,1,0.21172516427807,0.568499927002926,0.721118707248373,0.727171037819048],"size":[7.30029766496808,15.7137952060583,6.93290457657504,6.07728777762336,6.597402897052,8.58156547227012,9.99126229055127,4.60307026697218,6.60664488755216,10.9466424374972,3.77952755905512,4.95755462355111,6.06590702306314,9.55969090360129,5.66304179170863,7.07369839072336,7.87564566048404,5.45487770470479,13.7026060194081,22.6771653543307],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":31.4155251141553},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Kendall","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.01105446167024,1.37671793833726],"tickmode":"array","ticktext":["1.1","1.2","1.3"],"tickvals":[1.1,1.2,1.3],"categoryorder":"array","categoryarray":["1.1","1.2","1.3"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"-log10(Corrected contrasts)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.581790520931072,3.81617938846197],"tickmode":"array","ticktext":["1","2","3"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["1","2","3"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"-log10(Kendall correlation q-value)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"size<br />cv","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"4a083679734e":{"x":{},"y":{},"label":{},"description":{},"cv":{},"size":{},"alpha":{},"type":"scatter"}},"cur_data":"4a083679734e","visdat":{"4a083679734e":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8f3fc3b8be0eb5ba2aaa" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8f3fc3b8be0eb5ba2aaa">{"x":{"data":[{"x":[1.36009687121603,1.11031991665658,1.11031991665658,1.11031991665658,1.02767552879147,1.04295458401389,1.03367628657581,1.04295458401389,1.04295458401389,1.04295458401389,1.11031991665658,1.36009687121603,1.11031991665658,1.04295458401389,1.04295458401389,1.04295458401389,1.04295458401389,1.04295458401389,1.11031991665658,1.11031991665658],"y":[2.31260480227739,1.76864988221087,1.64016187711325,2.2430789943948,1.130504359555,1.33824208265364,3.50922205903115,1.35347891197222,1.20021185688834,4.32286975276798,2.31738730126682,1.02133643061673,2.86703540789461,3.05624503534987,1.11926042596683,3.50922205903115,1.58781074184319,1.08917047481288,2.08348988597215,2.31738730126682],"text":["-log10(corrected_contrasts): 1.360097<br />-log10(Pearson_qvalue): 2.312605<br />name: PF00307<br />description: Calponin homology (CH) domain<br />size:  1256","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 1.768650<br />name: PF00560<br />description: Leucine Rich Repeat<br />size: 13718","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 1.640162<br />name: PF00614<br />description: Phospholipase D Active site motif<br />size:  1021","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 2.243079<br />name: PF00786<br />description: P21-Rho-binding domain<br />size:   574","-log10(corrected_contrasts): 1.027676<br />-log10(Pearson_qvalue): 1.130504<br />name: PF00855<br />description: PWWP domain<br />size:   829","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 1.338242<br />name: PF00856<br />description: SET domain<br />size:  2278","-log10(corrected_contrasts): 1.033676<br />-log10(Pearson_qvalue): 3.509222<br />name: PF00954<br />description: S-locus glycoprotein domain<br />size:  3766","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 1.353479<br />name: PF01016<br />description: Ribosomal L27 protein<br />size:   133","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 1.200212<br />name: PF01412<br />description: Putative GTPase activating protein for Arf<br />size:   834","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 4.322870<br />name: PF01453<br />description: D-mannose binding lectin<br />size:  4991","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 2.317387<br />name: PF02002<br />description: TFIIE alpha subunit<br />size:    68","-log10(corrected_contrasts): 1.360097<br />-log10(Pearson_qvalue): 1.021336<br />name: PF03062<br />description: MBOAT, membrane-bound O-acyltransferase family<br />size:   201","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 2.867035<br />name: PF07496<br />description: CW-type Zinc Finger<br />size:   569","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 3.056245<br />name: PF08276<br />description: PAN-like domain<br />size:  3270","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 1.119260<br />name: PF10497<br />description: Zinc-finger domain of monoamine-oxidase A repressor R1<br />size:   408","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 3.509222<br />name: PF11721<br />description: Malectin domain<br />size:  1108","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 1.587811<br />name: PF12146<br />description: Serine aminopeptidase, S33<br />size:  1676","-log10(corrected_contrasts): 1.042955<br />-log10(Pearson_qvalue): 1.089170<br />name: PF12698<br />description: ABC-2 family transporter protein<br />size:   337","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 2.083490<br />name: PF12796<br />description: Ankyrin repeats (3 copies)<br />size:  9505","-log10(corrected_contrasts): 1.110320<br />-log10(Pearson_qvalue): 2.317387<br />name: PF13855<br />description: Leucine rich repeat<br />size: 34294"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":[0.226119222956141,0.86570338551865,0.441186027903141,0.382576494080031,0.290372018054046,0.1,0.972344577450799,0.588551597784444,0.329812284924975,0.927591310168285,0.872186615016772,0.364799612894765,0.189786178098717,0.950206650942284,0.523994301723503,1,0.21172516427807,0.568499927002926,0.721118707248373,0.727171037819048],"size":[7.30029766496808,15.7137952060583,6.93290457657504,6.07728777762336,6.597402897052,8.58156547227012,9.99126229055127,4.60307026697218,6.60664488755216,10.9466424374972,3.77952755905512,4.95755462355111,6.06590702306314,9.55969090360129,5.66304179170863,7.07369839072336,7.87564566048404,5.45487770470479,13.7026060194081,22.6771653543307],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":31.4155251141553},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Pearson","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.01105446167024,1.37671793833726],"tickmode":"array","ticktext":["1.1","1.2","1.3"],"tickvals":[1.1,1.2,1.3],"categoryorder":"array","categoryarray":["1.1","1.2","1.3"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"-log10(Corrected contrasts)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.856259764509162,4.48794641887554],"tickmode":"array","ticktext":["1","2","3","4"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["1","2","3","4"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"-log10(Pearson correlation q-value)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"size<br />cv","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"4a087d6e3bf":{"x":{},"y":{},"label":{},"description":{},"cv":{},"size":{},"alpha":{},"type":"scatter"}},"cur_data":"4a087d6e3bf","visdat":{"4a087d6e3bf":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

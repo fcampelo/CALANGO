@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CALANGO</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.12</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/fcampelo/CALANGO/">
+  <a href="https://github.com/fcampelo/CALANGO/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -89,13 +85,13 @@
 
       
 
-      </header><script src="CALANGO_Parameters_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>CALANGO Parameters</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/fcampelo/CALANGO/blob/master/vignettes/CALANGO_Parameters.Rmd"><code>vignettes/CALANGO_Parameters.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fcampelo/CALANGO/blob/HEAD/vignettes/CALANGO_Parameters.Rmd" class="external-link"><code>vignettes/CALANGO_Parameters.Rmd</code></a></small>
       <div class="hidden name"><code>CALANGO_Parameters.Rmd</code></div>
 
     </div>
@@ -103,243 +99,313 @@
     
     
 <p><img src="https://github.com/fcampelo/CALANGO/raw/master/inst/images/CALANGO_LOGO.svg" height="150" alt="CALANGO logo. Drawn by Brazilian artist Berze - https://www.facebook.com/berzearte"></p>
-<p>This document lists the input parameters expected / accepted in the CALANGO definition files (or, alternatively, in the <code>defs</code> list).</p>
+<p>This document lists the input parameters expected / accepted in the
+CALANGO definition files (or, alternatively, in the <code>defs</code>
+list).</p>
 <hr>
-<div id="general-parameters" class="section level1">
-<h1 class="hasAnchor">
-<a href="#general-parameters" class="anchor"></a>General parameters</h1>
-<div id="annotation-files-dir" class="section level3">
-<h3 class="hasAnchor">
-<a href="#annotation-files-dir" class="anchor"></a>annotation.files.dir</h3>
+<div class="section level2">
+<h2 id="general-parameters">General parameters<a class="anchor" aria-label="anchor" href="#general-parameters"></a>
+</h2>
+<div class="section level4">
+<h4 id="annotation-files-dir">annotation.files.dir<a class="anchor" aria-label="anchor" href="#annotation-files-dir"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: path to the directory where annotation files are located</p>
+<p><strong>Description</strong>: path to the directory where annotation
+files are located</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="output-dir" class="section level3">
-<h3 class="hasAnchor">
-<a href="#output-dir" class="anchor"></a>output.dir</h3>
+<div class="section level4">
+<h4 id="output-dir">output.dir<a class="anchor" aria-label="anchor" href="#output-dir"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: path to the output directory where results should be saved</p>
+<p><strong>Description</strong>: path to the output directory where
+results should be saved</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="dataset-info" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dataset-info" class="anchor"></a>dataset.info</h3>
+<div class="section level4">
+<h4 id="dataset-info">dataset.info<a class="anchor" aria-label="anchor" href="#dataset-info"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: path to a file containing the genome metadata. It should contain <em>at least</em>, for each genome: (1) path for annotation data; (2) phenotype data (numeric); (3) normalization data (numeric) It must be a <em>tab-separated value</em> file with no column headers.</p>
+<p><strong>Description</strong>: path to a file containing the genome
+metadata. It should contain <em>at least</em>, for each genome: (1) path
+for annotation data; (2) phenotype data (numeric); (3) normalization
+data (numeric) It must be a <em>tab-separated value</em> file with no
+column headers.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="x-column" class="section level3">
-<h3 class="hasAnchor">
-<a href="#x-column" class="anchor"></a>x.column</h3>
+<div class="section level4">
+<h4 id="x-column">x.column<a class="anchor" aria-label="anchor" href="#x-column"></a>
+</h4>
 <p><strong>Type</strong>: integer/numeric</p>
-<p><strong>Description</strong>: index of the column from the file specified in <code>dataset.info</code> containing the phenotype data, which will be used to sort the genomes and find annotation terms associated to that phenotype.</p>
+<p><strong>Description</strong>: index of the column from the file
+specified in <code>dataset.info</code> containing the phenotype data,
+which will be used to sort the genomes and find annotation terms
+associated to that phenotype.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="short-name-column" class="section level3">
-<h3 class="hasAnchor">
-<a href="#short-name-column" class="anchor"></a>short.name.column</h3>
+<div class="section level4">
+<h4 id="short-name-column">short.name.column<a class="anchor" aria-label="anchor" href="#short-name-column"></a>
+</h4>
 <p><strong>Type</strong>: integer/numeric</p>
-<p><strong>Description</strong>: index of the column from the file specified in <code>dataset.info</code> containing the short names for species/lineages to be used when plotting data.</p>
+<p><strong>Description</strong>: index of the column from the file
+specified in <code>dataset.info</code> containing the short names for
+species/lineages to be used when plotting data.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="group-column" class="section level3">
-<h3 class="hasAnchor">
-<a href="#group-column" class="anchor"></a>group.column</h3>
+<div class="section level4">
+<h4 id="group-column">group.column<a class="anchor" aria-label="anchor" href="#group-column"></a>
+</h4>
 <p><strong>Type</strong>: integer/numeric</p>
-<p><strong>Description</strong>: index of the column from the file specified in <code>dataset.info</code> containing the group to be used for coloring the heatmaps</p>
+<p><strong>Description</strong>: index of the column from the file
+specified in <code>dataset.info</code> containing the group to be used
+for coloring the heatmaps</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="ontology" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ontology" class="anchor"></a>ontology</h3>
+<div class="section level4">
+<h4 id="ontology">ontology<a class="anchor" aria-label="anchor" href="#ontology"></a>
+</h4>
 <p><strong>Type</strong>: character string.</p>
-<p><strong>Description</strong>: which dictionary data type to use? Accepts <em>“GO”</em> or <em>“other”</em></p>
+<p><strong>Description</strong>: which dictionary data type to use?
+Accepts <em>“GO”</em> or <em>“other”</em></p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="dict-path" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dict-path" class="anchor"></a>dict.path</h3>
+<div class="section level4">
+<h4 id="dict-path">dict.path<a class="anchor" aria-label="anchor" href="#dict-path"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: path to dictionary file (a two-column <em>tab-separated value</em> file containing annotation IDs and their descriptions). Not needed if <code>ontology = "GO"</code>.</p>
+<p><strong>Description</strong>: path to dictionary file (a two-column
+<em>tab-separated value</em> file containing annotation IDs and their
+descriptions). Not needed if <code>ontology = "GO"</code>.</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="column" class="section level3">
-<h3 class="hasAnchor">
-<a href="#column" class="anchor"></a>column</h3>
+<div class="section level4">
+<h4 id="column">column<a class="anchor" aria-label="anchor" href="#column"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: the <em>name</em> of the column in the annotation file that should be used.</p>
+<p><strong>Description</strong>: the <em>name</em> of the column in the
+annotation file that should be used.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="denominator-column" class="section level3">
-<h3 class="hasAnchor">
-<a href="#denominator-column" class="anchor"></a>denominator.column</h3>
+<div class="section level4">
+<h4 id="denominator-column">denominator.column<a class="anchor" aria-label="anchor" href="#denominator-column"></a>
+</h4>
 <p><strong>Type</strong>: integer/numeric</p>
-<p><strong>Description</strong>: index of the column from the file specified in <code>dataset.info</code> containing the normalization data.</p>
+<p><strong>Description</strong>: index of the column from the file
+specified in <code>dataset.info</code> containing the normalization
+data.</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="tree-path" class="section level3">
-<h3 class="hasAnchor">
-<a href="#tree-path" class="anchor"></a>tree.path</h3>
+<div class="section level4">
+<h4 id="tree-path">tree.path<a class="anchor" aria-label="anchor" href="#tree-path"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
 <p><strong>Description</strong>: path to the tree file.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="tree-type" class="section level3">
-<h3 class="hasAnchor">
-<a href="#tree-type" class="anchor"></a>tree.type</h3>
+<div class="section level4">
+<h4 id="tree-type">tree.type<a class="anchor" aria-label="anchor" href="#tree-type"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: tree file type. Accepts <em>“nexus”</em> or <em>“newick”</em>. Case-sensitive.</p>
+<p><strong>Description</strong>: tree file type. Accepts
+<em>“nexus”</em> or <em>“newick”</em>. Case-sensitive.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="type" class="section level3">
-<h3 class="hasAnchor">
-<a href="#type" class="anchor"></a>type</h3>
+<div class="section level4">
+<h4 id="type">type<a class="anchor" aria-label="anchor" href="#type"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: type of analysis to perform. Currently accepts only <em>“correlation”</em></p>
+<p><strong>Description</strong>: type of analysis to perform. Currently
+accepts only <em>“correlation”</em></p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: none</p>
 </div>
-<div id="mht-method" class="section level3">
-<h3 class="hasAnchor">
-<a href="#mht-method" class="anchor"></a>MHT.method</h3>
+<div class="section level4">
+<h4 id="mht-method">MHT.method<a class="anchor" aria-label="anchor" href="#mht-method"></a>
+</h4>
 <p><strong>Type</strong>: character string</p>
-<p><strong>Description</strong>: type of multiple hypothesis testing correction to apply. Accepts all methods listed in <code><a href="https://rdrr.io/r/stats/p.adjust.html">stats::p.adjust.methods</a></code>.</p>
+<p><strong>Description</strong>: type of multiple hypothesis testing
+correction to apply. Accepts all methods listed in
+<code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">stats::p.adjust.methods</a></code>.</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: <em>“BH”</em></p>
 </div>
-<div id="cores" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cores" class="anchor"></a>cores</h3>
+<div class="section level4">
+<h4 id="cores">cores<a class="anchor" aria-label="anchor" href="#cores"></a>
+</h4>
 <p><strong>Type</strong>: integer/numeric</p>
-<p><strong>Description</strong>: Number of cores to use. Must be a positive integer.</p>
+<p><strong>Description</strong>: Number of cores to use. Must be a
+positive integer.</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 1</p>
 <hr>
 </div>
 </div>
-<div id="cutoff-values" class="section level1">
-<h1 class="hasAnchor">
-<a href="#cutoff-values" class="anchor"></a>Cutoff values</h1>
-<p>Cutoffs are used to regulate how much graphical output is produced by CALANGO. The <em>tab-separated value</em> files that are generated at the end of the analysis (and saved in the <em>output.dir</em>) will always contain all, unfiltered results.</p>
-<p><strong>q-value cutoffs</strong> are used for correlation and phylogeny-aware linear models. Only entries with q-values <em>smaller</em> than these cutoffs will be shown.</p>
-<div id="spearman-qvalue-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#spearman-qvalue-cutoff" class="anchor"></a>spearman.qvalue.cutoff</h3>
+<div class="section level2">
+<h2 id="cutoff-values">Cutoff values<a class="anchor" aria-label="anchor" href="#cutoff-values"></a>
+</h2>
+<p>Cutoffs are used to regulate how much graphical output is produced by
+CALANGO. The <em>tab-separated value</em> files that are generated at
+the end of the analysis (and saved in the <em>output.dir</em>) will
+always contain all, unfiltered results.</p>
+<p><strong>q-value cutoffs</strong> are used for correlation and
+phylogeny-aware linear models. Only entries with q-values
+<em>smaller</em> than these cutoffs will be shown.</p>
+<div class="section level4">
+<h4 id="spearman-qvalue-cutoff">spearman.qvalue.cutoff<a class="anchor" aria-label="anchor" href="#spearman-qvalue-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric between 0 and 1</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 1</p>
 </div>
-<div id="pearson-qvalue-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pearson-qvalue-cutoff" class="anchor"></a>pearson.qvalue.cutoff</h3>
+<div class="section level4">
+<h4 id="pearson-qvalue-cutoff">pearson.qvalue.cutoff<a class="anchor" aria-label="anchor" href="#pearson-qvalue-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric between 0 and 1</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 1</p>
 </div>
-<div id="kendall-qvalue-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#kendall-qvalue-cutoff" class="anchor"></a>kendall.qvalue.cutoff</h3>
+<div class="section level4">
+<h4 id="kendall-qvalue-cutoff">kendall.qvalue.cutoff<a class="anchor" aria-label="anchor" href="#kendall-qvalue-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric between 0 and 1</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 1</p>
 </div>
-<div id="linear_model-qvalue-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#linear_model-qvalue-cutoff" class="anchor"></a>linear_model.qvalue.cutoff</h3>
+<div class="section level4">
+<h4 id="linear_model-qvalue-cutoff">linear_model.qvalue.cutoff<a class="anchor" aria-label="anchor" href="#linear_model-qvalue-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric between 0 and 1</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 1</p>
 <hr>
-<p><strong>correlation cutoffs</strong> are used to establish thresholds of positive/negative correlation values for the graphical output. <strong>Important</strong>: these parameters are a bit counter-intuitive. Please check the example below for clarity.</p>
+<p><strong>correlation cutoffs</strong> are used to establish thresholds
+of positive/negative correlation values for the graphical output.
+<strong>Important</strong>: these parameters are a bit
+counter-intuitive. Please check the example below for clarity.</p>
 </div>
-<div id="spearman-cor-lower-cutoff-spearman-cor-upper-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#spearman-cor-lower-cutoff-spearman-cor-upper-cutoff" class="anchor"></a>spearman.cor.lower.cutoff / spearman.cor.upper.cutoff</h3>
+<div class="section level4">
+<h4 id="spearman-cor-lower-cutoff-spearman-cor-upper-cutoff">spearman.cor.lower.cutoff / spearman.cor.upper.cutoff<a class="anchor" aria-label="anchor" href="#spearman-cor-lower-cutoff-spearman-cor-upper-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric values between 0 and 1</p>
-<p><strong>Description</strong>: Thresholds for Spearman correlation values. The selection criteria is: (Spearman correlation &lt; lower.cutoff) OR (Spearman correlation &gt; upper.cutoff)</p>
+<p><strong>Description</strong>: Thresholds for Spearman correlation
+values. The selection criteria is: (Spearman correlation &lt;
+lower.cutoff) OR (Spearman correlation &gt; upper.cutoff)</p>
 <p><strong>Required</strong>: NO</p>
-<p><strong>Defaults</strong>: <code>spearman.cor.upper.cutoff = -1</code>; <code>spearman.cor.lower.cutoff = 1</code> (i.e., no filtering)</p>
-<p><strong>Example 1</strong>: If you set <code>spearman.cor.upper.cutoff = 0.8</code> and <code>spearman.cor.lower.cutoff = -0.8</code>, only pairs with Spearman correlation values smaller than <code>-0.8</code> OR greater than <code>0.8</code> will be shown.</p>
-<p><strong>Example 2</strong>: If you set <code>spearman.cor.upper.cutoff = 0</code> and <code>spearman.cor.lower.cutoff = -1</code>, pairs with Spearman correlation values smaller than <code>-1</code> OR greater than <code>0</code> will be shown. Since the Spearman correlation cannot be smaller than <code>-1</code>, this means that only positively correlated pairs will be shown.</p>
-<p><strong>Example 3</strong>: If you set any values such that <code>spearman.cor.upper.cutoff &lt; spearman.cor.lower.cutoff</code>, all pairs are shown (no filtering is performed).</p>
+<p><strong>Defaults</strong>:
+<code>spearman.cor.upper.cutoff = -1</code>;
+<code>spearman.cor.lower.cutoff = 1</code> (i.e., no filtering)</p>
+<p><strong>Example 1</strong>: If you set
+<code>spearman.cor.upper.cutoff = 0.8</code> and
+<code>spearman.cor.lower.cutoff = -0.8</code>, only pairs with Spearman
+correlation values smaller than <code>-0.8</code> OR greater than
+<code>0.8</code> will be shown.</p>
+<p><strong>Example 2</strong>: If you set
+<code>spearman.cor.upper.cutoff = 0</code> and
+<code>spearman.cor.lower.cutoff = -1</code>, pairs with Spearman
+correlation values smaller than <code>-1</code> OR greater than
+<code>0</code> will be shown. Since the Spearman correlation cannot be
+smaller than <code>-1</code>, this means that only positively correlated
+pairs will be shown.</p>
+<p><strong>Example 3</strong>: If you set any values such that
+<code>spearman.cor.upper.cutoff &lt; spearman.cor.lower.cutoff</code>,
+all pairs are shown (no filtering is performed).</p>
 </div>
-<div id="pearson-cor-lower-cutoff-pearson-cor-upper-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pearson-cor-lower-cutoff-pearson-cor-upper-cutoff" class="anchor"></a>pearson.cor.lower.cutoff / pearson.cor.upper.cutoff</h3>
+<div class="section level4">
+<h4 id="pearson-cor-lower-cutoff-pearson-cor-upper-cutoff">pearson.cor.lower.cutoff / pearson.cor.upper.cutoff<a class="anchor" aria-label="anchor" href="#pearson-cor-lower-cutoff-pearson-cor-upper-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric values between 0 and 1</p>
-<p><strong>Description</strong>: Thresholds for Pearson correlation values. The selection criteria is: (Pearson correlation &lt; lower.cutoff) OR (Pearson correlation &gt; upper.cutoff)</p>
+<p><strong>Description</strong>: Thresholds for Pearson correlation
+values. The selection criteria is: (Pearson correlation &lt;
+lower.cutoff) OR (Pearson correlation &gt; upper.cutoff)</p>
 <p><strong>Required</strong>: NO</p>
-<p><strong>Defaults</strong>: <code>pearson.cor.upper.cutoff = -1</code>; <code>pearson.cor.lower.cutoff = 1</code> (i.e., no filtering)</p>
+<p><strong>Defaults</strong>:
+<code>pearson.cor.upper.cutoff = -1</code>;
+<code>pearson.cor.lower.cutoff = 1</code> (i.e., no filtering)</p>
 </div>
-<div id="kendall-cor-lower-cutoff-kendall-cor-upper-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#kendall-cor-lower-cutoff-kendall-cor-upper-cutoff" class="anchor"></a>kendall.cor.lower.cutoff / kendall.cor.upper.cutoff</h3>
+<div class="section level4">
+<h4 id="kendall-cor-lower-cutoff-kendall-cor-upper-cutoff">kendall.cor.lower.cutoff / kendall.cor.upper.cutoff<a class="anchor" aria-label="anchor" href="#kendall-cor-lower-cutoff-kendall-cor-upper-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric values between 0 and 1</p>
-<p><strong>Description</strong>: Thresholds for Kendall correlation values. The selection criteria is: (Kendall correlation &lt; lower.cutoff) OR (Kendall correlation &gt; upper.cutoff)</p>
+<p><strong>Description</strong>: Thresholds for Kendall correlation
+values. The selection criteria is: (Kendall correlation &lt;
+lower.cutoff) OR (Kendall correlation &gt; upper.cutoff)</p>
 <p><strong>Required</strong>: NO</p>
-<p><strong>Defaults</strong>: <code>kendall.cor.upper.cutoff = -1</code>; <code>kendall.cor.lower.cutoff = 1</code> (i.e., no filtering)</p>
-<p><strong>standard deviation and coefficient of variation cutoffs</strong> (only values greater than cutoff will be shown)</p>
+<p><strong>Defaults</strong>:
+<code>kendall.cor.upper.cutoff = -1</code>;
+<code>kendall.cor.lower.cutoff = 1</code> (i.e., no filtering)</p>
+<p><strong>standard deviation and coefficient of variation
+cutoffs</strong> (only values greater than cutoff will be shown)</p>
 </div>
-<div id="sd-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sd-cutoff" class="anchor"></a>sd.cutoff</h3>
+<div class="section level4">
+<h4 id="sd-cutoff">sd.cutoff<a class="anchor" aria-label="anchor" href="#sd-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: non-negative numeric value</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 0</p>
 </div>
-<div id="cv-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cv-cutoff" class="anchor"></a>cv.cutoff</h3>
+<div class="section level4">
+<h4 id="cv-cutoff">cv.cutoff<a class="anchor" aria-label="anchor" href="#cv-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: non-negative numeric value</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 0</p>
-<p><strong>sum of annotation terms cutoff</strong> (only values greater than cutoff will be shown)</p>
+<p><strong>sum of annotation terms cutoff</strong> (only values greater
+than cutoff will be shown)</p>
 </div>
-<div id="annotation_size-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#annotation_size-cutoff" class="anchor"></a>annotation_size.cutoff</h3>
+<div class="section level4">
+<h4 id="annotation_size-cutoff">annotation_size.cutoff<a class="anchor" aria-label="anchor" href="#annotation_size-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: non-negative integer/numeric value</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 0</p>
-<p><strong>prevalence and heterogeneity cutoffs</strong> (only values greater than cutoff will be shown). <strong>Prevalence</strong> is defined as the percentage of lineages where annotation term was observed at least once. <strong>Heterogeneity</strong> is defined as the percentage of lineages where annotation term count is different from the median.</p>
+<p><strong>prevalence and heterogeneity cutoffs</strong> (only values
+greater than cutoff will be shown). <strong>Prevalence</strong> is
+defined as the percentage of lineages where annotation term was observed
+at least once. <strong>Heterogeneity</strong> is defined as the
+percentage of lineages where annotation term count is different from the
+median.</p>
 </div>
-<div id="prevalence-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#prevalence-cutoff" class="anchor"></a>prevalence.cutoff</h3>
+<div class="section level4">
+<h4 id="prevalence-cutoff">prevalence.cutoff<a class="anchor" aria-label="anchor" href="#prevalence-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric value between 0 and 1</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 0</p>
 </div>
-<div id="heterogeneity-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#heterogeneity-cutoff" class="anchor"></a>heterogeneity.cutoff</h3>
+<div class="section level4">
+<h4 id="heterogeneity-cutoff">heterogeneity.cutoff<a class="anchor" aria-label="anchor" href="#heterogeneity-cutoff"></a>
+</h4>
 <p><strong>Type</strong>: numeric value between 0 and 1</p>
 <p><strong>Required</strong>: NO</p>
 <p><strong>Default</strong>: 0</p>
 <hr>
 </div>
 </div>
-<div id="advanced-configurations" class="section level1">
-<h1 class="hasAnchor">
-<a href="#advanced-configurations" class="anchor"></a>Advanced configurations</h1>
-<div id="raw_data_sd_filter" class="section level3">
-<h3 class="hasAnchor">
-<a href="#raw_data_sd_filter" class="anchor"></a>raw_data_sd_filter</h3>
-<p><strong>Type</strong>: character string. Accepts <em>“TRUE”</em> or <em>“FALSE”</em></p>
-<p><strong>Description</strong>: If <em>“TRUE”</em> all annotation terms where standard deviation for annotation raw values before normalization is zero are removed. This filter is used to remove the (quite common) bias when QPAL (phenotype) and normalizing factors are strongly associated by chance.</p>
+<div class="section level2">
+<h2 id="advanced-configurations">Advanced configurations<a class="anchor" aria-label="anchor" href="#advanced-configurations"></a>
+</h2>
+<div class="section level4">
+<h4 id="raw_data_sd_filter">raw_data_sd_filter<a class="anchor" aria-label="anchor" href="#raw_data_sd_filter"></a>
+</h4>
+<p><strong>Type</strong>: character string. Accepts <em>“TRUE”</em> or
+<em>“FALSE”</em></p>
+<p><strong>Description</strong>: If <em>“TRUE”</em> all annotation terms
+where standard deviation for annotation raw values before normalization
+is zero are removed. This filter is used to remove the (quite common)
+bias when QPAL (phenotype) and normalizing factors are strongly
+associated by chance.</p>
 <p><strong>Required</strong>: YES</p>
 <p><strong>Default</strong>: “TRUE”</p>
 </div>
@@ -357,11 +423,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Francisco Lobo, Felipe Campelo, Jorge Augusto Hongo, Giovanni Marques de Castro.</p>
+  <p></p>
+<p>Developed by Francisco Lobo, Felipe Campelo, Jorge Augusto Hongo, Giovanni Marques de Castro.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -369,6 +437,8 @@
 
   
 
+
+  
 
   </body>
 </html>

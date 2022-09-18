@@ -31,6 +31,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,23 +45,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CALANGO</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.12</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,7 +75,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/fcampelo/CALANGO/">
+  <a href="https://github.com/fcampelo/CALANGO/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -96,43 +92,43 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="calango-comparative-analysis-with-annotation-based-genomic-componentes" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#calango-comparative-analysis-with-annotation-based-genomic-componentes" class="anchor"></a>CALANGO<br><font size="+2">Comparative AnaLysis with ANnotation-based Genomic cOmponentes</font>
+<div class="section level1">
+<div class="page-header"><h1 id="calango-comparative-analysis-with-annotation-based-genomic-componentes">CALANGO<br><font size="+2">Comparative AnaLysis with ANnotation-based Genomic cOmponentes</font>
+<a class="anchor" aria-label="anchor" href="#calango-comparative-analysis-with-annotation-based-genomic-componentes"></a>
 </h1></div>
 <!-- badges: start -->
 
 <p><img src="https://github.com/fcampelo/CALANGO/raw/master/inst/images/CALANGO_LOGO-lighter.svg" height="300" alt="CALANGO logo. Drawn by Brazilian artist Berze - https://www.facebook.com/berzearte"></p>
 <hr>
-<div id="description" class="section level3">
-<h3 class="hasAnchor">
-<a href="#description" class="anchor"></a>DESCRIPTION</h3>
+<div class="section level3">
+<h3 id="description">DESCRIPTION<a class="anchor" aria-label="anchor" href="#description"></a>
+</h3>
 <p>CALANGO is a first-principles, phylogeny-aware comparative genomics package to search for annotation terms (e.g Pfam IDs, GO terms or superfamilies), formally described in a dictionary-like structure and used to annotate genomic components, associated with a quantitative/rank variable (e.g. number of cell types, genome size or density of specific genomic elements).</p>
 <p>Our software has been freely inspired by (and explicitly modeled to take into account information from) ideas and tools as diverse as comparative phylogenetics, genome annotation, gene enrichment analysis, and data visualization and interactivity.</p>
 </div>
-<div id="how-to-install" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-install" class="anchor"></a>HOW TO INSTALL</h3>
-<p>The latest version of CALANGO can be installed directly from the repository using <code><a href="https://devtools.r-lib.org/reference/remote-reexports.html">devtools::install_github()</a></code>:</p>
-<pre><code><a href="https://devtools.r-lib.org/reference/remote-reexports.html">devtools::install_github("LABpackages/CALANGO")</a></code></pre>
+<div class="section level3">
+<h3 id="how-to-install">HOW TO INSTALL<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
+</h3>
+<p>The latest version of CALANGO can be installed directly from the repository using <code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">devtools::install_github()</a></code>:</p>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"LABpackages/CALANGO"</span><span class="op">)</span></span></code></pre>
 <p>Alternatively, you should soon be able to install the last release version from CRAN by simply doing:</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("CALANGO")</a></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"CALANGO"</span><span class="op">)</span></span></code></pre>
 <p>In either case, please make sure that you have the latest R version (at least 3.6.1) as well as updated versions of all installed packages.</p>
 </div>
-<div id="installing-and-updating-dependencies" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-and-updating-dependencies" class="anchor"></a>INSTALLING AND UPDATING DEPENDENCIES</h3>
+<div class="section level3">
+<h3 id="installing-and-updating-dependencies">INSTALLING AND UPDATING DEPENDENCIES<a class="anchor" aria-label="anchor" href="#installing-and-updating-dependencies"></a>
+</h3>
 <p>CALANGO depends on some packages from <strong>Bioconductor</strong>. This requires an extra installation step before CALANGO can be used. Just run:</p>
-<pre><code><a href="https://labpackages.github.io/CALANGO/">library(CALANGO)
-install_bioc_dependencies(which = "all")</a></code></pre>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://labpackages.github.io/CALANGO/" class="external-link">CALANGO</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/install_bioc_dependencies.html">install_bioc_dependencies</a></span><span class="op">(</span>which <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre>
 <p>to install / update all dependencies (packages listed as CALANGO’s <code>imports</code> and <code>suggests</code>) to their latest versions.</p>
 <hr>
 </div>
-<div id="how-to-use---overview" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-use---overview" class="anchor"></a>HOW TO USE - OVERVIEW</h3>
+<div class="section level3">
+<h3 id="how-to-use---overview">HOW TO USE - OVERVIEW<a class="anchor" aria-label="anchor" href="#how-to-use---overview"></a>
+</h3>
 <p>To run CALANGO you need two things:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>a set of data<br>
 </li>
 <li>an input list defining the path to that data and what is to be done.</li>
@@ -140,7 +136,7 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 <p><strong>Retrieving data</strong></p>
 <p>A set of example data folders and files can accessed directly from the package using function <code><a href="reference/retrieve_data_files.html">retrieve_data_files()</a></code>. For instance, a call:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">CALANGO</span><span class="fu">::</span><span class="fu"><a href="reference/retrieve_data_files.html">retrieve_data_files</a></span><span class="op">(</span><span class="st">"./data"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">CALANGO</span><span class="fu">::</span><span class="fu"><a href="reference/retrieve_data_files.html">retrieve_data_files</a></span><span class="op">(</span><span class="st">"./data"</span><span class="op">)</span></span></code></pre></div>
 <p>will create a folder called <code>data</code> in the current working directory path, and download the sample files into subfolders within it. These subfolders will contain:</p>
 <ul>
 <li>genome annotation data files (under <code>./data/Pfam/</code> or <code>./data/gene2GO/</code>)</li>
@@ -151,12 +147,12 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 <p>The downloaded data will also contain files that describe the input list mentioned above, under <code>./data/parameters/</code>. These full examples represent all input files required to locally reproduce several types of analyses.</p>
 <hr>
 <p>Once these two pieces are in place, the CALANGO pipeline can be run by invoking the main function of the package. For instance:</p>
-<pre><code>output &lt;- run_CALANGO(defs = "./data/parameters/parameters_domain2GO_freq.txt", cores = 2)</code></pre>
+<pre><code><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_CALANGO.html">run_CALANGO</a></span><span class="op">(</span>defs <span class="op">=</span> <span class="st">"./data/parameters/parameters_domain2GO_freq.txt"</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre>
 <p>This call will generate an enriched <code>CALANGO</code> list as the output, and generate a dynamic HTML5 output (plus several tab-separated value (tsv) files in the directory provided as <code>output.dir</code>.</p>
 </div>
-<div id="preparing-your-input-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#preparing-your-input-files" class="anchor"></a>PREPARING YOUR INPUT FILES</h3>
+<div class="section level3">
+<h3 id="preparing-your-input-files">PREPARING YOUR INPUT FILES<a class="anchor" aria-label="anchor" href="#preparing-your-input-files"></a>
+</h3>
 <p>CALANGO requires the following files (please check the examples in in <code>./data/parameters/</code> if in doubt about file specifications):</p>
 <hr>
 <p><strong>genome annotation file</strong></p>
@@ -167,7 +163,7 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Q96P50</span>  GO:0005096<span class="kw">;</span><span class="ex">GO:0046872</span>   K12489</span></code></pre></div>
 <p>And is specified as:</p>
 <ul>
-<li><p>Fixed number of columns per file (minimum 2) separated by tabs, or “\t”.</p></li>
+<li><p>Fixed number of columns per file (minimum 2) separated by tabs, or “.</p></li>
 <li><p>First line as the header, each column having a unique column name.</p></li>
 <li><p>Each following line having an instance of a genomic feature represented by an unique ID (a specific coding-gene locus found in a genome, for instance) identifier.</p></li>
 <li><p>Multiple terms of the same entry (e.g. a gene annotated to multiple GO terms) should be in the same column and separated by “;”, with any number of spaces before and after it. It’s use after the last term is optional.</p></li>
@@ -182,7 +178,7 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 <ul>
 <li><p>all species to be analyzed (species IDs in the tree must be the same name of text files from the previous step)</p></li>
 <li><p>branch lengths proportional to divergence times (a chronogram)</p></li>
-<li><p>no polytomies (if there are such cases, CALANGO will resolve star branches using <a href="https://rdrr.io/cran/ape/man/multi2di.html">multi2di</a> method as implemented in <a href="http://ape-package.ird.fr/">ape</a> package.</p></li>
+<li><p>no polytomies (if there are such cases, CALANGO will resolve star branches using <a href="https://rdrr.io/cran/ape/man/multi2di.html" class="external-link">multi2di</a> method as implemented in <a href="http://ape-package.ird.fr/" class="external-link">ape</a> package.</p></li>
 </ul>
 <p>A tree in <em>newick</em> format (however, with no branch lengths), would be:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">genome_ID_1,</span><span class="er">(</span><span class="ex">genome_ID_2,genome_ID_3</span><span class="kw">))</span></span></code></pre></div>
@@ -221,17 +217,17 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ex">annotation_ID_N</span>   annotation_ID_description</span></code></pre></div>
 <p>CALANGO can treat each identifier as its own description, preventing the need to prepare an ontology that isn’t natively supported. For that, do not specify any ontology file and set the <code>ontology = "other"</code>.</p>
 </div>
-<div id="setting-up-calango-parameters" class="section level3">
-<h3 class="hasAnchor">
-<a href="#setting-up-calango-parameters" class="anchor"></a>SETTING UP CALANGO PARAMETERS</h3>
+<div class="section level3">
+<h3 id="setting-up-calango-parameters">SETTING UP CALANGO PARAMETERS<a class="anchor" aria-label="anchor" href="#setting-up-calango-parameters"></a>
+</h3>
 <p>CALANGO’s parameters are listed in the documentation of <code><a href="reference/run_CALANGO.html">run_CALANGO()</a></code>, as well as in the examples file provided (<code>./data/parameters/</code>). They are, for the current version:</p>
 <ul>
 <li><p>annotation.files.dir (required, string) - Folder where annotation files are located.</p></li>
 <li><p>output.dir (required, string) - output folder for results</p></li>
 <li>
 <p>dataset.info (required, string) - genome metadata file, it should contain at least:</p>
-<ol>
-<li>path for annotation data (if “annotation.files.dir” not provided OR file names (if "annotation.files.dir) is provided. Please notice this information should be the first column in metadata file;</li>
+<ol style="list-style-type: decimal">
+<li>path for annotation data (if “annotation.files.dir” not provided OR file names (if “annotation.files.dir) is provided. Please notice this information should be the first column in metadata file;</li>
 <li>phenotype data (numeric, this is the value CALANGO uses to rank species when searching for associations)</li>
 <li>normalization data (numeric, this is the value CALANGO uses as a denominator to compute annotation term frequencies to remove potential biases caused by, for instance, over annotation of model organisms or large differences in the counts of genomic elements). Please notice CALANGO does not require normalization data for GO, as it computes the total number of GO terms per species and uses it as a normalizing factor.</li>
 </ol>
@@ -245,26 +241,26 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 <li><p>tree.type (required, string) - tree file type (either “nexus” or “newick”, case-sensitive)</p></li>
 <li><p>cores (optional, numeric) - how many cores to use? If not provided the function defaults to 1.</p></li>
 <li><p>linear.model.cutoff = 0.5 (required, numeric) - Parameter that regulates how much graphical output is produced. We configure it to generate plots only for annotation terms with corrected q-values for phylogenetically independent contrasts smaller than 0.5.</p></li>
-<li><p>MHT.method = “BH” (optional, string) - type of multiple hypothesis correction to be used. Accepts all methods listed by <code><a href="https://rdrr.io/r/stats/p.adjust.html">stats::p.adjust.methods()</a></code>. If not provided the function defaults to “BH”.</p></li>
+<li><p>MHT.method = “BH” (optional, string) - type of multiple hypothesis correction to be used. Accepts all methods listed by <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">stats::p.adjust.methods()</a></code>. If not provided the function defaults to “BH”.</p></li>
 <li><p>type = “correlation” (optional, string) type of analysis to perform. Currently only “correlation” is supported.</p></li>
 </ul>
 </div>
-<div id="calango-output" class="section level3">
-<h3 class="hasAnchor">
-<a href="#calango-output" class="anchor"></a>CALANGO OUTPUT</h3>
-<p>Live examples of CALANGO output HTML5 pages can be found <a href="https://labpackages.github.io/CALANGO/articles/examples-page.html" target="_blank">here</a>.</p>
+<div class="section level3">
+<h3 id="calango-output">CALANGO OUTPUT<a class="anchor" aria-label="anchor" href="#calango-output"></a>
+</h3>
+<p>Live examples of CALANGO output HTML5 pages can be found <a href="https://labpackages.github.io/CALANGO/articles/examples-page.html" target="_blank" class="external-link">here</a>.</p>
 <p>CALANGO produces as its main output a dynamic HMTL5 website containing:</p>
 <ul>
 <li>A description of the input values and a button to download the input and results list.</li>
 <li>Interactive heatmaps and scatterplots</li>
 <li>A dynamic table of results.</li>
 </ul>
-<p>Please check our examples page at <a href="https://labpackages.github.io/CALANGO/" class="uri">https://labpackages.github.io/CALANGO/</a> to explore the full output of CALANGO for a variety of examples. The required data to fully reproduce these examples can be obtained by using <code><a href="reference/retrieve_data_files.html">CALANGO::retrieve_data_files()</a></code>.</p>
+<p>Please check our examples page at <a href="https://labpackages.github.io/CALANGO/" class="external-link uri">https://labpackages.github.io/CALANGO/</a> to explore the full output of CALANGO for a variety of examples. The required data to fully reproduce these examples can be obtained by using <code><a href="reference/retrieve_data_files.html">CALANGO::retrieve_data_files()</a></code>.</p>
 <hr>
 </div>
-<div id="calango-mastermind" class="section level3">
-<h3 class="hasAnchor">
-<a href="#calango-mastermind" class="anchor"></a>CALANGO MASTERMIND</h3>
+<div class="section level3">
+<h3 id="calango-mastermind">CALANGO MASTERMIND<a class="anchor" aria-label="anchor" href="#calango-mastermind"></a>
+</h3>
 <ul>
 <li>Francisco P. Lobo (<a href="mailto:franciscolobo@gmail.com" class="email">franciscolobo@gmail.com</a>, <a href="mailto:francisco.lobo@ufmg.br" class="email">francisco.lobo@ufmg.br</a>)
 <ul>
@@ -273,9 +269,9 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 </li>
 </ul>
 </div>
-<div id="other-developers" class="section level3">
-<h3 class="hasAnchor">
-<a href="#other-developers" class="anchor"></a>OTHER DEVELOPERS</h3>
+<div class="section level3">
+<h3 id="other-developers">OTHER DEVELOPERS<a class="anchor" aria-label="anchor" href="#other-developers"></a>
+</h3>
 <ul>
 <li>Felipe Campelo (<a href="mailto:f.campelo@aston.ac.uk" class="email">f.campelo@aston.ac.uk</a>, <a href="mailto:fcampelo@gmail.com" class="email">fcampelo@gmail.com</a>)
 <ul>
@@ -296,9 +292,9 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 </li>
 </ul>
 </div>
-<div id="non-coding-collaborators" class="section level3">
-<h3 class="hasAnchor">
-<a href="#non-coding-collaborators" class="anchor"></a>NON-CODING COLLABORATORS</h3>
+<div class="section level3">
+<h3 id="non-coding-collaborators">NON-CODING COLLABORATORS<a class="anchor" aria-label="anchor" href="#non-coding-collaborators"></a>
+</h3>
 <ul>
 <li>Gabriel M. F. Almeida - scientific adviser (analysis of phage data)</li>
 </ul>
@@ -309,51 +305,61 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=CALANGO">https://​cloud.r-project.org/​package=CALANGO</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/fcampelo/CALANGO/">https://​github.com/​fcampelo/​CALANGO/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/fcampelo/CALANGO/issues/">https://​github.com/​fcampelo/​CALANGO/​issues/​</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=CALANGO" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/fcampelo/CALANGO/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/fcampelo/CALANGO/issues/" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing CALANGO</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Francisco Lobo <br><small class="roles"> Author </small>  </li>
 <li>Felipe Campelo <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Jorge Augusto Hongo <br><small class="roles"> Author </small>  </li>
 <li>Giovanni Marques de Castro <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/fcampelo/CALANGO/actions"><img src="https://github.com/fcampelo/CALANGO/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://CRAN.R-project.org/package=CALANGO"><img src="https://www.r-pkg.org/badges/version/CALANGO" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://CRAN.R-project.org/package=CALANGO"><img src="https://cranlogs.r-pkg.org/badges/CALANGO" alt="CRAN Downloads"></a></li>
+<li><a href="https://github.com/fcampelo/CALANGO/actions" class="external-link"><img src="https://github.com/fcampelo/CALANGO/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://CRAN.R-project.org/package=CALANGO" class="external-link"><img src="https://www.r-pkg.org/badges/version/CALANGO" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://CRAN.R-project.org/package=CALANGO" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/CALANGO" alt="CRAN Downloads"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Francisco Lobo, Felipe Campelo, Jorge Augusto Hongo, Giovanni Marques de Castro.</p>
+  <p></p>
+<p>Developed by Francisco Lobo, Felipe Campelo, Jorge Augusto Hongo, Giovanni Marques de Castro.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -361,6 +367,8 @@ install_bioc_dependencies(which = "all")</a></code></pre>
 
   
 
+
+  
 
   </body>
 </html>
