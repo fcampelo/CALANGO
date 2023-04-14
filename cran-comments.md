@@ -1,8 +1,7 @@
 ## Changes and notes
 * Regular maintenance update: 
-    * Added a second set of examples under Vignette "Usage Examples".
-    * Updated project home page, minor updates to documentation.
-    * Minor changes to Rmd files to prevent pandoc errors.
+    * Updated documentation.
+    * Added links to published paper and updated citation()
 
 ## R CMD check results  
 * Duration: 42.5s
