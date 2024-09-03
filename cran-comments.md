@@ -10,13 +10,7 @@
 * Duration: 28.7s
 * 0 errors | 0 warnings | 0 notes ; R CMD check succeeded
 
-## Test environments
-* macOS:
-    * macOS 11.6.4 (R 4.1.3): <https://github.com/fcampelo/CALANGO/actions>
-    
-* Linux:
-    * Ubuntu 20.04.4 (R 4.1.3 and devel): <https://github.com/fcampelo/CALANGO/actions>
-    
-* Windows:
-    * Microsoft Windows Server 2022 - 10.0.20348 (R 4.1.3): <https://github.com/fcampelo/CALANGO/actions>
-    * Microsoft Windows Windows 10 Enterprise v.20H2 (R 4.2.0): using `devtools::check()`
+## Test environments (via Github actions)
+* macOS 14.6.1 (R 4.4.1)
+* Linux Ubuntu 20.04.4 (R 4.1.3, 4.2.3, 4.3.3, 4.4.1 and devel)
+* Microsoft Windows Server 2022 - 10.0.20348 (R 4.2.3 and 4.4.1)
