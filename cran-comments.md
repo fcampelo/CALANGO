@@ -1,7 +1,8 @@
 ## Changes and notes
 * Regular maintenance update: 
-    * Updated documentation.
-    * Added links to published paper and updated citation()
+    * Removed dependency on orphaned package 'taxize'.
+    * Fixed minor bug that resulted in occasional errors in Windows.
+    * Minor updates to documentation
 
 ## R CMD check results  
 * Duration: 42.5s
@@ -10,7 +11,6 @@
 ## Test environments
 * macOS:
     * macOS 11.6.4 (R 4.1.3): <https://github.com/fcampelo/CALANGO/actions>
-    * macOS 10.16 (R 4.1.0): using `devtools::check()`
     
 * Linux:
     * Ubuntu 20.04.4 (R 4.1.3 and devel): <https://github.com/fcampelo/CALANGO/actions>

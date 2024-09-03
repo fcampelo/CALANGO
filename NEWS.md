@@ -3,6 +3,7 @@
 - Regular maintenance update:  
     - Minor bug fix that resulted in occasional errors on Windows machines  
     - Minor updates to documentation
+    - Minor tweak to dependencies
 
 # CALANGO 1.0.14
 
