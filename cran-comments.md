@@ -5,7 +5,7 @@
     * Minor updates to documentation
 
 ## R CMD check results  
-* Duration: 42.5s
+* Duration: 28.7s
 * 0 errors | 0 warnings | 0 notes ; R CMD check succeeded
 
 ## Test environments
