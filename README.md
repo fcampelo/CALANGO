@@ -1,4 +1,6 @@
-# CALANGO<br/><font size = +2>Comparative AnaLysis with ANnotation-based Genomic cOmponentes</font><br/><font size = 0>Now published in <a href="https://doi.org/10.1016/j.patter.2023.100728">Cell Patterns</a>
+# CALANGO<br/>
+<font size = 0>Comparative AnaLysis with ANnotation-based Genomic cOmponentes</font><br/>
+<font size = 0>Now published in <a href="https://doi.org/10.1016/j.patter.2023.100728">Patterns</a>
 <!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/CALANGO)](https://CRAN.R-project.org/package=CALANGO)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/CALANGO)](https://CRAN.R-project.org/package=CALANGO)
