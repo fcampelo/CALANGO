@@ -3,6 +3,8 @@
     * Removed dependency on orphaned package 'taxize'.
     * Fixed minor bug that resulted in occasional errors in Windows.
     * Minor updates to documentation
+    * Fixed malfunction in retrieve_calanguize_genomes() that let to it wiping 
+    out existing files in the target directory.
 
 ## R CMD check results  
 * Duration: 28.7s

@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+      - Update_2024Sep
   pull_request:
     branches:
       - main
       - master
+      - Update_2024Sep
 
 name: R-CMD-check
 
