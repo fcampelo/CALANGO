@@ -3,6 +3,7 @@
   [![R-CMD-check](https://github.com/fcampelo/CALANGO/workflows/R-CMD-check/badge.svg)](https://github.com/fcampelo/CALANGO/actions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/CALANGO)](https://CRAN.R-project.org/package=CALANGO)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/CALANGO)](https://CRAN.R-project.org/package=CALANGO)
+[![R-CMD-check](https://github.com/fcampelo/CALANGO/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fcampelo/CALANGO/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 <img src="https://github.com/fcampelo/CALANGO/raw/master/inst/images/CALANGO_LOGO-lighter.svg" height="300" alt="CALANGO logo. Drawn by Brazilian artist Berze - https://www.facebook.com/berzearte">
