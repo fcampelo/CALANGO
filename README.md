@@ -273,5 +273,5 @@ Please check our examples page at <https://labpackages.github.io/CALANGO/> to ex
 
 
 [multi2di]: <https://rdrr.io/cran/ape/man/multi2di.html>
-[ape]: <http://ape-package.ird.fr/>
+[ape]: <https://cran.r-project.org/package=ape>
 [Felsenstein, 1985]: <https://www.jstor.org/stable/2461605>
